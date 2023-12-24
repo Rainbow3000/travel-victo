@@ -69,7 +69,7 @@ const Payment = () => {
   return (
     <div className='payment-container'>
         <div className="payment-wraper">
-            <Link to="/cart" className='btn-payment-back'>Trờ về</Link>
+            <Link to="/instant-book" className='btn-payment-back'>Trờ về</Link>
             <div>
                 <div className='payment-list-order'>
                            

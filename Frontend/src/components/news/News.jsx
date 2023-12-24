@@ -12,14 +12,14 @@ const News = () => {
                 </div>
                 <div className="news-list">
                 <div className="child-news">
-                        <a href="https://www.youtube.com/">
+                        <a href="/single/1">
                             <div className="news-img">
                                 <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703174454/nhatrang1-500x425_1_lpwoe7.png" alt="" />
                             </div>
                         </a>
                         <div className="news-name">
                             <div className="name-left">
-                                <a href="https://www.youtube.com/">
+                                <a href="/single/1">
                                     <div className="news-form">Flight</div>
                                     <div className='name-new'>Unusually Bad Weather Across The Country</div>
                                 </a>
@@ -28,14 +28,14 @@ const News = () => {
                         </div>
                     </div>
                     <div className="child-news">
-                        <a href="https://www.youtube.com/">
+                        <a href="/single/1">
                             <div className="news-img">
                                 <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703174454/nhatrang1-500x425_1_lpwoe7.png" alt="" />
                             </div>
                         </a>
                         <div className="news-name">
                             <div className="name-left">
-                                <a href="https://www.youtube.com/">
+                                <a href="/single/1">
                                     <div className="news-form">Flight</div>
                                     <div className='name-new'>Unusually Bad Weather Across The Country</div>
                                 </a>
@@ -44,14 +44,14 @@ const News = () => {
                         </div>
                     </div>
                      <div className="child-news">
-                        <a href="https://www.youtube.com/">
+                        <a href="/single/1">
                             <div className="news-img">
                                 <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703174454/nhatrang1-500x425_1_lpwoe7.png" alt="" />
                             </div>
                         </a>
                         <div className="news-name">
                             <div className="name-left">
-                                <a href="https://www.youtube.com/">
+                                <a href="/single/1">
                                     <div className="news-form">Flight</div>
                                     <div className='name-new'>Unusually Bad Weather Across The Country</div>
                                 </a>
@@ -60,14 +60,14 @@ const News = () => {
                         </div>
                     </div>
                     <div className="child-news">
-                        <a href="https://www.youtube.com/">
+                        <a href="/single/1">
                             <div className="news-img">
                                 <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703174454/nhatrang1-500x425_1_lpwoe7.png" alt="" />
                             </div>
                         </a>
                         <div className="news-name">
                             <div className="name-left">
-                                <a href="https://www.youtube.com/">
+                                <a href="/single/1">
                                     <div className="news-form">Flight</div>
                                     <div className='name-new'>Unusually Bad Weather Across The Country</div>
                                 </a>

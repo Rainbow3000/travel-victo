@@ -12,7 +12,7 @@ const TravelList = () => {
                 </div>
                 <div className="travel-list">
                     <div className="child-travel">
-                        <a href="https://www.youtube.com/">
+                        <a href="/single/1">
                             <div className="travel-img">
                                 <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703065362/thail_c8yrwp.png" alt="" />
                             </div>
@@ -37,7 +37,7 @@ const TravelList = () => {
                         </a>
                     </div>
                     <div className="child-travel">
-                        <a href="https://www.youtube.com/">
+                        <a href="/single/1">
                             <div className="travel-img">
                                 <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703065358/cam_bxoswq.png" alt="" />
                             </div>
@@ -62,7 +62,7 @@ const TravelList = () => {
                         </a>
                     </div>
                     <div className="child-travel">
-                        <a href="https://www.youtube.com/">
+                        <a href="/single/1">
                             <div className="travel-img">
                                 <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703065355/mi2_kyidf0.png" alt="" />
                             </div>
@@ -87,7 +87,7 @@ const TravelList = () => {
                         </a>
                     </div>
                     <div className="child-travel">
-                        <a href="https://www.youtube.com/">
+                        <a href="/single/1">
                             <div className="travel-img">
                                 <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703174454/nhatrang1-500x425_1_lpwoe7.png" alt="" />
                             </div>
@@ -112,7 +112,7 @@ const TravelList = () => {
                         </a>
                     </div>
                     <div className="child-travel">
-                        <a href="https://www.youtube.com/">
+                        <a href="/single/1">
                             <div className="travel-img">
                                 <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703174454/nhatrang1-500x425_1_lpwoe7.png" alt="" />
                             </div>
@@ -137,7 +137,7 @@ const TravelList = () => {
                         </a>
                     </div>
                     <div className="child-travel">
-                        <a href="https://www.youtube.com/">
+                        <a href="/single/1">
                             <div className="travel-img">
                                 <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703174454/nhatrang1-500x425_1_lpwoe7.png" alt="" />
                             </div>

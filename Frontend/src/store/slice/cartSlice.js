@@ -27,7 +27,7 @@ const cartSlice = createSlice({
                 state.products.push(action.payload);             
             }
             const sum = state.products.map(item=>{
-                return item.price * item.quantity; 
+                return item.price_new * item.quantity; 
             }).reduce((current,next)=>{
                 return current + next; 
             },0)
@@ -39,7 +39,7 @@ const cartSlice = createSlice({
             state.total = 0;
             state.products.push(...action.payload);
             const sum = state.products.map(item => {
-                return item.price * item.quantity;
+                return item.price_new * item.quantity;
             }).reduce((current, next) => {
                 return current + next;
             }, 0)
@@ -52,7 +52,7 @@ const cartSlice = createSlice({
             state.total = 0; 
             state.products.push(...action.payload);
             const sum = state.products.map(item => {
-                return item.price * item.quantity;
+                return item.price_new * item.quantity;
             }).reduce((current, next) => {
                 return current + next;
             }, 0)

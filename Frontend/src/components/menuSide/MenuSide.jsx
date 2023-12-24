@@ -28,7 +28,7 @@ const MenuSide = ({user,toggleMenu,menuRef}) => {
                   )
               }
 
-              <li><Link to="/cart"><ShoppingCartOutlinedIcon /></Link></li>
+              <li><Link to="/instant-book"><ShoppingCartOutlinedIcon /></Link></li>
           </ul>
       </div>
   )

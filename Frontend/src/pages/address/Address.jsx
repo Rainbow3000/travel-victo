@@ -60,7 +60,7 @@ const Address = () => {
                         <span style={{color:'red'}} class="float-end">{total.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span>
                     </h4>
                     <hr/>
-                    <small>* Đơn hàng sẽ thông báo trước từ 3 - 5 ngày.</small>
+                    <small>* Lịch trình của bạn sẽ thông báo trước từ 3 - 5 ngày.</small>
                     <br/>
                     <small>* Tư vấn hỗ trợ 24/7</small>
                 </div>

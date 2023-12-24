@@ -12,7 +12,7 @@ const Destinations = () => {
                 </div>
                 <div className="destination-tour">
                     <div className="destination-col-5">
-                        <a href="https://www.youtube.com/">
+                        <a href="/single/1">
                         <div className="destination-img">
                             <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703065366/destination17_ju0iug.jpg" alt="" />
                         </div>
@@ -25,7 +25,7 @@ const Destinations = () => {
                     </div>
                     <div className="destination-col-7">
                         <div className="child-col-7">
-                            <a href="https://www.youtube.com/">
+                            <a href="/single/1">
                             <div className="destination-img">
                                 <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703065362/thail_c8yrwp.png" alt="" />
                             </div>
@@ -37,7 +37,7 @@ const Destinations = () => {
                             </a>
                         </div>
                         <div className="child-col-7">
-                            <a href="https://www.youtube.com/">
+                            <a href="/single/1">
                             <div className="destination-img">
                                 <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703065358/cam_bxoswq.png" alt="" />
                             </div>
@@ -49,7 +49,7 @@ const Destinations = () => {
                             </a>
                         </div>
                         <div className="child-col-7">
-                            <a href="https://www.youtube.com/">
+                            <a href="/single/1">
                             <div className="destination-img">
                                 <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703065355/mi2_kyidf0.png" alt="" />
                             </div>
@@ -61,7 +61,7 @@ const Destinations = () => {
                             </a>
                         </div>
                         <div className="child-col-7">
-                            <a href="https://www.youtube.com/">
+                            <a href="/single/1">
                             <div className="destination-img">
                                 <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703065354/ks2_nanhen.png" alt="" />
                             </div>

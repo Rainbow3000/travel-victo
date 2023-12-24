@@ -48,11 +48,15 @@ const Hotels = () => {
                 <Slider {...settings}>
                     <div className="feature-item1">
                         <div className="item-header1">
-                            <img height={250} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
+                            <a href="/single/1">
+                                <img height={250} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
+                            </a>
                         </div>
                         <div className="item-main1">
                             <div className='feature-item-info1'>
-                                <h2>InterContinental Nha Trang 1</h2>
+                                <a href="/single/1">
+                                    <h2>InterContinental Nha Trang 1</h2>
+                                </a>
                                 <p>150$ | Per Person</p>
                                 <span>Located in the heart of a beautiful coastal city along Vietnam's southern coastline, InterContinental Nha Trang offers the ultimate luxury…</span>
                             </div>
@@ -60,11 +64,15 @@ const Hotels = () => {
                     </div>
                     <div className="feature-item1">
                         <div className="item-header1">
-                            <img height={250} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
+                            <a href="/single/1">
+                                <img height={250} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
+                            </a>
                         </div>
                         <div className="item-main1">
                             <div className='feature-item-info1'>
-                                <h2>InterContinental Nha Trang 1</h2>
+                                <a href="/single/1">
+                                    <h2>InterContinental Nha Trang 1</h2>
+                                </a>
                                 <p>150$ | Per Person</p>
                                 <span>Located in the heart of a beautiful coastal city along Vietnam's southern coastline, InterContinental Nha Trang offers the ultimate luxury…</span>
                             </div>
@@ -72,11 +80,15 @@ const Hotels = () => {
                     </div>
                     <div className="feature-item1">
                         <div className="item-header1">
-                            <img height={250} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
+                            <a href="/single/1">
+                                <img height={250} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
+                            </a>
                         </div>
                         <div className="item-main1">
                             <div className='feature-item-info1'>
-                                <h2>InterContinental Nha Trang 1</h2>
+                                <a href="/single/1">
+                                    <h2>InterContinental Nha Trang 1</h2>
+                                </a>
                                 <p>150$ | Per Person</p>
                                 <span>Located in the heart of a beautiful coastal city along Vietnam's southern coastline, InterContinental Nha Trang offers the ultimate luxury…</span>
                             </div>
@@ -84,11 +96,15 @@ const Hotels = () => {
                     </div>
                     <div className="feature-item1">
                         <div className="item-header1">
-                            <img height={250} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
+                            <a href="/single/1">
+                                <img height={250} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
+                            </a>
                         </div>
                         <div className="item-main1">
                             <div className='feature-item-info1'>
-                                <h2>InterContinental Nha Trang 1</h2>
+                                <a href="/single/1">
+                                    <h2>InterContinental Nha Trang 1</h2>
+                                </a>
                                 <p>150$ | Per Person</p>
                                 <span>Located in the heart of a beautiful coastal city along Vietnam's southern coastline, InterContinental Nha Trang offers the ultimate luxury…</span>
                             </div>
@@ -96,11 +112,15 @@ const Hotels = () => {
                     </div>
                     <div className="feature-item1">
                         <div className="item-header1">
-                            <img height={250} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
+                            <a href="/single/1">
+                                <img height={250} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
+                            </a>
                         </div>
                         <div className="item-main1">
                             <div className='feature-item-info1'>
-                                <h2>InterContinental Nha Trang 1</h2>
+                                <a href="/single/1">
+                                    <h2>InterContinental Nha Trang 1</h2>
+                                </a>
                                 <p>150$ | Per Person</p>
                                 <span>Located in the heart of a beautiful coastal city along Vietnam's southern coastline, InterContinental Nha Trang offers the ultimate luxury…</span>
                             </div>

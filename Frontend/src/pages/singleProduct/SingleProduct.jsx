@@ -58,7 +58,7 @@ const SingleProduct = () => {
       quantity: quantityCart
     }
     dispatch(addToCart(product))
-    navigate("/cart")
+    navigate("/instant-book")
   }
   const handleComment = () => {
     if (!user) {
@@ -313,7 +313,7 @@ const SingleProduct = () => {
             </ul>
             </div>
             <div className="form-group-btn">
-                <a href="#">INSTANT BOOK</a>
+                <a href="/instant-book">INSTANT BOOK</a>
             </div>
           </div>
         </div>
