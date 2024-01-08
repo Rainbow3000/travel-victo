@@ -63,11 +63,12 @@
 }
 .table-check{
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(4,1fr);
 }
 .check-col{
-    padding: 10px;
     border: 1px solid #ddd; /* Viền ô */
+    margin: 5px;
+    padding: 5px;
 }
 .policy{
     display: grid;

@@ -1,9 +1,9 @@
-const userService = require('../services/userService'); 
+const User = require('../models/userModel')
 
 module.exports = {
     getAllUser :async(req,res,next)=>{
         try {
-            const users = await userService.getAllUser(); 
+            const users = await User.find(); 
             res.status(200).json(users); 
         } catch (error) {
             res.status(500).json(error);
@@ -11,7 +11,7 @@ module.exports = {
     }, 
     getSingleUser:async(req,res,next)=>{
         try {
-            const user = await userService.getSingleUser(req.params.id); 
+            const user = await User.findById(req.params.id); 
             res.status(200).json(user); 
         } catch (error) {
             res.status(500).json(error); 
@@ -19,7 +19,7 @@ module.exports = {
     },
     updateUser:async(req,res,next)=>{
         try {
-            await userService.updateUser({userId:req.params.id,data:req.body}); 
+            await User.findByIdAndUpdate({userId:req.params.id,data:req.body}); 
             res.status(200).json('update user success !');
         } catch (error) {
             console.log(error);
@@ -28,16 +28,16 @@ module.exports = {
     }, 
     deleteUser:async(req,res,next)=>{
         try {
-            await userService.deleteUser(req.params.id); 
+            await User.findByIdAndDelete(req.params.id); 
             res.status(200).json('delete user success !');
         } catch (error) {
             res.status(500).json(error); 
         }
     }, 
-    userStat:async(req,res,next)=>{
+    userCharts:async(req,res,next)=>{
         try {
-            const user = await userService.userStat(); 
-            res.status(200).json(user); 
+        
+            res.status(200).json(); 
         } catch (error) {
             res.status(500).json(error); 
         }

@@ -4,7 +4,6 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { useDispatch,useSelector } from 'react-redux';
 import './userChart.scss'
 const UserChart = () => {
-    const {userStat} = useSelector(state=>state.user); 
     const dispatch = useDispatch();   
     const MONTHS = useMemo(()=>[
         "January",

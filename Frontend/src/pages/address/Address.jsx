@@ -4,8 +4,6 @@ import {useNavigate } from 'react-router-dom'
 import { useSelector,useDispatch } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import moment from 'moment';
-import { clearCart } from '../../store/slice/cartSlice';
-import {createOrderUser,createOrderEnd} from '../../store/slice/orderSlice'
 const Address = () => {
   const navigate = useNavigate(); 
   const dispatch = useDispatch(); 
@@ -36,13 +34,10 @@ const Address = () => {
             orderDate: moment().format('MMMM Do YYYY, h:mm:ss a'),
             resultOrder: "pending"
         }
-        dispatch(createOrderUser({order}));
     }
 
     if (isOrderSuccess) {
-        dispatch(clearCart());
-        dispatch(createOrderEnd());
-        alert('Bạn đã đặt hàng thành công !');
+
         navigate('/');
       }
   return (

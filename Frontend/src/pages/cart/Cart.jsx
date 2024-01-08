@@ -3,7 +3,6 @@ import './cart.css'
 import ClearIcon from '@mui/icons-material/Clear';
 import { useNavigate } from 'react-router-dom';
 import { useSelector,useDispatch } from 'react-redux';
-import {setCart,updateCart,deleteCart} from '../../store/slice/cartSlice'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 const Cart = () => {
   const {products,total} = useSelector(state => state.cart); 
@@ -13,7 +12,7 @@ const Cart = () => {
   useEffect(()=>{
      const data = JSON.parse(localStorage.getItem('cart'));
      if(data !== null){
-         dispatch(setCart(data))
+    
      }
   },[dispatch])
 
@@ -26,12 +25,12 @@ const Cart = () => {
           let product = filterProducts.find((item,index) => index === indexs);
           filterProducts = [...filterProducts.slice(0, indexs), { ...product, quantity: product.quantity + 1 }, ...filterProducts.slice(indexs + 1)]; 
       }
-      dispatch(updateCart(filterProducts))
+
   }
 
   const handleRemoveCart = (indexs)=>{
         const filterProductsRemove = filterProducts.filter((item,index)=>index !== indexs);  
-        dispatch(deleteCart(filterProductsRemove)); 
+ 
   }
   const handleCartNextStep = ()=>{
         const user = JSON.parse(localStorage.getItem('user')); 

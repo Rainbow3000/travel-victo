@@ -7,17 +7,13 @@ import { Badge, Button } from '@mui/material'
 import {Link} from 'react-router-dom'
 import { useEffect,useRef} from 'react';
 import { useLocation } from 'react-router-dom';
-import { useSelector,useDispatch } from 'react-redux';
-import {setCart} from '../../store/slice/cartSlice'; 
-import {loginSuccess,logout} from '../../store/slice/userSlice'
+import { useSelector,useDispatch } from 'react-redux'; 
 import MenuSide from '../menuSide/MenuSide';
-import LogoutIcon from '@mui/icons-material/Logout';
+
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 const Navbar = () => {
     const dispatch = useDispatch(); 
     const location = useLocation(); 
-    const {products} = useSelector(state=>state.cart); 
-    const {user} = useSelector(state=>state.user); 
     const path = location.pathname.split('/')[1];
     const [menuClick,setMenuClick]  = useState(false)
     const menuRef = useRef(); 
@@ -29,10 +25,10 @@ const Navbar = () => {
         const data = JSON.parse(localStorage.getItem('cart'));
         const dataUser = JSON.parse(localStorage.getItem('user'));
         if(dataUser){
-            dispatch(loginSuccess(dataUser))
+            
         }
         if (data) {
-            dispatch(setCart(data))
+   
         }
     }, [dispatch])
 
@@ -42,7 +38,6 @@ const Navbar = () => {
             menuRef.current.style.transform = "translateX(0%)";
         }
     const handleLogout =()=>{
-        dispatch(logout()); 
         alert('Đăng xuất thành công !'); 
     }
 

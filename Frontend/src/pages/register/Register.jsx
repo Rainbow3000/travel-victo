@@ -3,7 +3,7 @@ import './register.scss'
 import { Link } from 'react-router-dom'; 
 import {useDispatch} from 'react-redux'
 import {useNavigate} from 'react-router-dom'
-import {userRegister} from '../../store/slice/registerSlice'; 
+
 import { useForm } from 'react-hook-form';
 const Register = () => {
     let navigate = useNavigate(); 
@@ -13,7 +13,6 @@ const Register = () => {
         e.preventDefault(); 
         const {userName,email,password,rePassword}  = data; 
         if(password === rePassword){
-            dispatch(userRegister({userName,email,password}));
             alert("Đăng ký tài khoản thành công !"); 
             navigate('/login');
         }

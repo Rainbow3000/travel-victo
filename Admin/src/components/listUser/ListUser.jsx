@@ -4,7 +4,6 @@ import FaceOutlinedIcon from '@mui/icons-material/FaceOutlined';
 import {useSelector} from "react-redux"; 
 import './listUser.scss'
  const ListUser = () => {
- const {users} = useSelector(state=>state.user); 
   return (
       <Paper className='paper-list-user' sx={{ width:'100%',height: 500, overflowX: 'hidden',display:'flex',flexDirection:'column',alignItems:'center'}} >
             <Table className='user-table'>

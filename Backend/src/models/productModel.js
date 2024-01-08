@@ -26,7 +26,6 @@ const Product  = new mongoose.Schema({
         }
     },
     image:{type:String,default:""},
-    price:{type:Number,},
     time:{
         type:String
     },
@@ -39,6 +38,9 @@ const Product  = new mongoose.Schema({
         ref:"Category", 
         required:true
      }, 
+     hotline:{
+        type:String
+     }
 },{timestamps:true})
 
 

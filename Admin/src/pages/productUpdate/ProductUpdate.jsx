@@ -8,7 +8,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useNavigate } from 'react-router-dom';
-import { publicRequest, userRequest } from '../../requestMethod';
 import { useState, useEffect } from 'react';
 import { ref, uploadBytes, deleteObject, getDownloadURL } from 'firebase/storage';
 import storage from '../../firebase';
@@ -20,7 +19,7 @@ const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const UpdateProduct = () => {
 	const theme = useTheme();
-	const [color, setColor] = useState('');
+	
 	const [size, setSize] = useState([]);
 	const [categoryId, setCategoryId] = useState('');
 	const [price, setPrice] = useState(null);
@@ -51,8 +50,7 @@ const UpdateProduct = () => {
 			const response = await axios.get(`http://localhost:5500/api/product/${id}`);
 			console.log('123', response.data);
 			setName(response.data.name);
-			setDesc(response.data.desc);
-			setColor(response.data.color);
+			setDesc(response.data.desc);		
 			setPrice(response.data.price);
 			setSize(response.data.size);
 			setPriceOld(response.data.priceOld);
@@ -141,7 +139,7 @@ const UpdateProduct = () => {
 			<label for='fname'>Màu</label>
 			<select
 				value={color}
-				onChange={(e) => setColor(e.target.value)}
+			
 				className='select-option-input-create'
 				id='country'
 				name='country'

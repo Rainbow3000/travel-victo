@@ -24,7 +24,7 @@ import {
 } from "react-router-dom";
 import UpdateUser from "./pages/createUser/UpdateUser";
 function App() {
-  const {user} = useSelector(state=>state.user); 
+
   return (
     <Box sx={{width:"100%"}} className="admin-container">
         <Box sx={{ display: "flex", justifyContent: 'space-between', width: '100%', flexDirection: 'column' }}>

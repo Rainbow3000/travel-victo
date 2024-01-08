@@ -1,5 +1,4 @@
 import {createSlice,createAsyncThunk} from '@reduxjs/toolkit'
-import {userRequest} from '../../requestMethod'
 
 
 export const fetchProducts = createAsyncThunk(

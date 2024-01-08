@@ -4,19 +4,24 @@ const Order = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:'Product'
     },
-    totalMonney:{type:Number,required:true},
-    phone:{type:Number,required:true}, 
-    address:{type:String,required:true},
-    methodPay:{type:String,default:"paypal",required:true},
-    isPaid:{type:Boolean,default:false,required:true},
-    paidAt:{type:String},
-    isDelivered:{type:Boolean,require:true,default:false}, 
-    orderDate:{type:String,require:true},
-    email:{type:String,required:true},
-    deliveredAt: {
-        type: String,
+    schedule: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'Schedule'
     },
-    status:{type:String,require:true,default:"Pending"}
+    customer:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'Customer'
+    },
+    totalMonney:{type:Number,required:true},
+    payType:{
+        type:Number,
+        default:0
+    },
+    namePayType:{
+        type:String
+    },
+    isPaid:{type:Boolean,default:false,required:true},
+    status:{type:Number,require:true,default:0}
 }, { timestamps: true })
 
 

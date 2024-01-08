@@ -7,7 +7,6 @@ import LocalAtmOutlinedIcon from '@mui/icons-material/LocalAtmOutlined';
 import AssignmentReturnedOutlinedIcon from '@mui/icons-material/AssignmentReturnedOutlined';
 import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
 import {useSelector,useDispatch} from 'react-redux'
-import {getOrderStat,getOrderIncome,getReturnOrder} from '../../redux/slices/orderSlice'
 import "./featured.scss"
 const Featured = () => {
     const {orderStat,orderIncome,orderReturn} = useSelector(state=>state.order);

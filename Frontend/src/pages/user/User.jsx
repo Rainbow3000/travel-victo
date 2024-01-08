@@ -1,15 +1,12 @@
 import React,{useEffect} from 'react'
 import "./user.scss"
 import {useDispatch,useSelector} from "react-redux";
-import {getOrderByUserId} from '../../store/slice/orderSlice'
-import {createMessage} from '../../store/slice/messageSlice'
 import {useNavigate} from 'react-router-dom'
 
 let userEmail = null; 
 const User = () => {
     const navigate = useNavigate(); 
     const dispatch = useDispatch(); 
-    const {orderByUser} = useSelector(state=>state.order); 
     useEffect(()=>{
         const user = JSON.parse(localStorage.getItem('user')); 
         if(!user){
@@ -18,7 +15,7 @@ const User = () => {
         }
         const {_id} = user; 
         userEmail = user.email; 
-        dispatch(getOrderByUserId(_id)); 
+    
     },[])
 
     const handleClickCancel = (type,id)=>{
@@ -28,7 +25,6 @@ const User = () => {
                 productId:id
             }
          }
-        dispatch(createMessage(data)); 
     }
     return (
         <div className='user-container'>
@@ -46,24 +42,8 @@ const User = () => {
                         <th>status</th>
                         <th>option</th>
                     </tr>
-                    {
-                        orderByUser && orderByUser.map(item=>{
-                            if(item.status !== "Cancelled"){
-                            return item.product.map(productOrder=>{
-                                return <tr>
-                                    <td><img width={120} src={productOrder.image} /></td>
-                                    <td>{productOrder.productName}</td>
-                                    <td>{productOrder.color}</td>
-                                    <td>{productOrder.size}</td>
-                                    <td>{productOrder.quantity}</td>
-                                    <td>{productOrder.total}</td>
-                                    <td>{item.status}</td>
-                                    <td><button onClick={()=>handleClickCancel("cancel-order",item._id)} >Cancel</button></td>
-                                </tr>
-                            })
-                            }
-                        })
-                    }
+                 
+                    
                    
                 </table>
             </div>

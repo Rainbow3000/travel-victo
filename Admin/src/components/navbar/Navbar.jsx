@@ -12,14 +12,12 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import Badge from '@mui/material/Badge';
 import {useDispatch,useSelector} from 'react-redux'
-import {userLogout} from '../../redux/slices/userSlice'
 import {useNavigate,Link} from 'react-router-dom'
 const Navbar = () => {
   const navigate = useNavigate(); 
   const dispatch = useDispatch(); 
   const {messages}  = useSelector(state=>state.message);  
-  const handleLogout = ()=>{
-    dispatch(userLogout()); 
+  const handleLogout = ()=>{ 
     navigate('/login'); 
   }
   return (

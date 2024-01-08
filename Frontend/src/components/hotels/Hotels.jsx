@@ -1,8 +1,10 @@
 import React from 'react';
 import './hotels.css';
 import Slider from 'react-slick';
+import { useSelector } from 'react-redux';
 
 const Hotels = () => {
+    const {products} = useSelector(state => state.product); 
     function SampleNextArrow(props) {
         const { className, style, onClick } = props;
         return (

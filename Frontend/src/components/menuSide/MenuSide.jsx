@@ -3,12 +3,9 @@ import './menuSide.scss'
 import { Link } from 'react-router-dom'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { useSelector,useDispatch } from 'react-redux';
-import {loginSuccess,logout} from '../../store/slice/userSlice'
 const MenuSide = ({user,toggleMenu,menuRef}) => {
     const dispatch = useDispatch(); 
-    const handleLogout = ()=>{
-        dispatch(logout()); 
-    }
+   
   return (
       <div onClick={()=>toggleMenu()} ref={menuRef} className='navbar-menu-show'>
           <ul>
@@ -20,7 +17,7 @@ const MenuSide = ({user,toggleMenu,menuRef}) => {
                       <Link to="/me">
                             <li>{`hello!,${user.userName}`}</li>
                       </Link>
-                     <li onClick={handleLogout}>LOGOUT</li></>) : (
+                     <li >LOGOUT</li></>) : (
                    <>
                           <Link to="/login"><li>LOGIN</li></Link>
                           <Link to="/register"><li>REGISTER</li></Link>

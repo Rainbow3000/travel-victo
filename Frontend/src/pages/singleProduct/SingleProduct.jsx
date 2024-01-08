@@ -6,13 +6,10 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchSingleProduct } from '../../store/slice/productSlice';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { addToCart } from '../../store/slice/cartSlice';
 import StarOutlineOutlinedIcon from '@mui/icons-material/StarOutlineOutlined';
-import { createComment, getAllComment } from "../../store/slice/commentSlice"
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Slider from "react-slick";
 import { feature } from '../../data';
-
 
 const SingleProduct = () => {
   const navigate = useNavigate();
@@ -21,15 +18,9 @@ const SingleProduct = () => {
   const { isFetching } = useSelector(state => state.product);
   const [listProducts, setListProducts] = useState([]);
   const singleProducts = listProducts?.find(item => item._id === productId);
-  const { comments } = useSelector(state => state.comment);
-  const { user } = useSelector(state => state.user);
   const dispatch = useDispatch();
-  const [quantityCart, setQuantityCart] = useState(1);
-  const [comment, setComment] = useState("");
-  const [size, setSize] = useState(singleProducts && singleProducts.size && singleProducts.size[0]);
-  const [color, setColor] = useState(singleProducts && singleProducts.color && singleProducts.color[0]);
-  const [indexSize, setIndexSize] = useState(0);
 
+  const [quantityCart, setQuantityCart] = useState(1);
 
   useEffect(() => {
     const products = JSON.parse(localStorage.getItem('products'));
@@ -42,10 +33,7 @@ const SingleProduct = () => {
       setQuantityCart(quantityCart => quantityCart + 1);
     }
   }
-  const handleSizeClick = (index, type) => {
-    setSize(type)
-    setIndexSize(index);
-  }
+
 
   const handleAddToCart = () => {
     const product = {
@@ -57,25 +45,11 @@ const SingleProduct = () => {
       price: singleProducts.price,
       quantity: quantityCart
     }
-    dispatch(addToCart(product))
     navigate("/instant-book")
   }
-  const handleComment = () => {
-    if (!user) {
-      navigate('/login');
-    } else {
-      const data = {
-        userId: user._id,
-        content: comment,
-        productId
-      }
-      dispatch(createComment(data));
-      navigate(0);
-    }
-  }
+
   useEffect(() => {
-    dispatch(getAllComment(productId));
-    setColor("");
+
   }, [])
   function SampleNextArrow(props) {
     const { className, style, onClick } = props;
@@ -120,11 +94,9 @@ const SingleProduct = () => {
     prevArrow: <SamplePrevArrow />
   };
 
-  const handleSetSize = (index) => {
-    setSize(index)
-  }
+
   const handleChangeColor = (e) => {
-    setColor(e.target.value);
+
   }
   const refFeature = useRef();
   const [slice, setSlice] = useState(0);
@@ -220,12 +192,23 @@ const SingleProduct = () => {
                 <p>Located in the heart of a beautiful coastal city along Vietnam's southern coastline, InterContinental Nha Trang offers the ultimate luxury beachside retreat with 277 spacious rooms and suites combined with authentic dining experiences and spa therapies. Sitting on the bay where the blue sea laps the golden sand, you’ll enjoy the perfect blend of renowned InterContinental hospitality and Vietnamese local charm whether it is for a leisure getaway, family vacation or the wedding of your dreams.</p>
               </div>
               <div className="table-check">
-                <div className="check-col">Check in: 15:00</div>
-                <div className="check-col">Check out: 00:00	</div>
-                <div className="check-col">Front desk: +84-258-3887777</div>
-                <div className="check-col">Reservations: 01208 52 175	</div>
-                <div className="check-col">Currency: USD	</div>
-                <div className="check-col">Languages: English, Thai, Vietnamese</div>
+                    <>
+                      <div className="check-col">Check in: 15:00</div>
+                      <div className="check-col">Check out: 00:00	</div>
+                      <div className="check-col">Front desk: +84-258-3887777</div>
+                      <button className='check-col'><Link className='link' to="/payment">Order</Link></button>
+                    </>
+
+                    <>
+                      <div className="check-col">Reservations: 01208 52 175	</div>
+                      <div className="check-col">Currency: USD	</div>
+                      <div className="check-col">Languages: English, Thai, Vietnamese</div>
+                      <button className='check-col'><Link className='link' to="/payment">Order</Link></button>
+                    
+                    </>
+               
+            
+                
               </div>
             </div>
             <div className="policy">
@@ -312,9 +295,7 @@ const SingleProduct = () => {
                 </li>
             </ul>
             </div>
-            <div className="form-group-btn">
-                <a href="/instant-book">INSTANT BOOK</a>
-            </div>
+
           </div>
         </div>
       </div>

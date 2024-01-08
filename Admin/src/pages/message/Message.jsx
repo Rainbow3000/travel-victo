@@ -1,6 +1,5 @@
 import React,{useEffect} from 'react'
 import "./message.scss"
-import {getAllMessageUser} from '../../redux/slices/messageSlice'
 import {useDispatch,useSelector} from 'react-redux'
 const Message = () => {
     const dispatch = useDispatch(); 

@@ -1,7 +1,6 @@
 import React from 'react'
 import {useEffect} from 'react'
 import './login.scss'
-import {userLogin,loginStart,loginFalure} from '../../store/slice/userSlice'
 import { useDispatch,useSelector} from 'react-redux'
 import { useNavigate,Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -23,9 +22,6 @@ const Login = () => {
     }
   }
   const onSubmit = (data)=>{
-    dispatch(loginStart());
-    dispatch(userLogin(data))
-    dispatch(loginFalure());
     navigate('/');
     if(errorMessage){
       return; 

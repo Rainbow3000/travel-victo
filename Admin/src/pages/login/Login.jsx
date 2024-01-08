@@ -1,7 +1,6 @@
 import {React,useEffect,useState,useRef} from 'react'
 import {Box,Paper} from '@mui/material'
 import { useForm } from "react-hook-form";
-import {userLogin} from '../../redux/slices/userSlice'
 import {useSelector,useDispatch} from 'react-redux'
 import {useNavigate} from 'react-router-dom'
 import './login.scss'
@@ -18,8 +17,7 @@ const Login = () => {
           navigate('/login')
         }
     }, [])
-  const onSubmit = (data)=>{
-        dispatch(userLogin(data));   
+  const onSubmit = (data)=>{ 
         setValue("password",""); 
    }
 

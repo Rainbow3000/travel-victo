@@ -1,10 +1,7 @@
 import {React, useState} from 'react'
 import {PayPalButtons} from '@paypal/react-paypal-js'
-// import { publicRequest } from '../../requestMethod'
 import { useDispatch} from 'react-redux'
-import { publicRequest,userRequest } from '../../requestMethod';
-import { useNavigate } from 'react-router-dom';
-import {clearCart} from '../../store/slice/cartSlice'; 
+import { useNavigate } from 'react-router-dom'; 
 import moment from 'moment';
 const PaypalCheckoutButton = ({products,totalPay,addressUser,user}) => {
   const [paidFor,setPaidFor] = useState(false); 
@@ -40,11 +37,8 @@ const PaypalCheckoutButton = ({products,totalPay,addressUser,user}) => {
   if(paidFor === true){
     const paymentFullFilled  = async()=>{
         try {
-          const result = await userRequest.post('/order',order); 
-          if(result.data){
-              dispatch(clearCart()); 
-              navigate('/'); 
-          }
+         
+         
         } catch (error) {
            console.log(error);
         }

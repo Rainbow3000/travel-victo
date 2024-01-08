@@ -1,6 +1,6 @@
 
-const orderService = require('../services/orderService'); 
-
+const Order = require('../models/orderModel')
+const Customer = require('../models/customerModel')
 
 module.exports = {
     getOrderByUserId:async(req,res,next)=>{
@@ -13,15 +13,25 @@ module.exports = {
     }, 
     createOrder:async(req,res,next)=>{
         try {
-            const order  = await orderService.createOrder(req.body); 
-            res.status(200).json(order); 
+            const newCustomer = new Order(req.body.customer); 
+            const customer  = await newCustomer.save(); 
+            const newOrder = new Order(req.body.order); 
+            newOrder.customer = customer._id; 
+            const order  = await newOrder.save(); 
+            res.status(200).json({
+                success:true,
+                data:{
+                    order,
+                    customer
+                }
+            }); 
         } catch (error) {
             res.status(500).json(error); 
         }
     },
     getAllOrder:async(req,res,next)=>{
         try {
-            const orders = await orderService.getAllOrder(); 
+            const orders = await Order.find(); 
             res.status(200).json(orders); 
         } catch (error) {
             res.status(500).json(error); 

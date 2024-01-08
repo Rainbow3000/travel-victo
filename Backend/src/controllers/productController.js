@@ -79,6 +79,7 @@ module.exports = {
             const product = await  product.findByIdAndUpdate({_id:req.params.id},req.body,{
                 new:true
             }); 
+            
             res.status(200).json({
                 success:true,
                 data:product

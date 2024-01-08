@@ -8,7 +8,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useNavigate } from 'react-router-dom';
-import { publicRequest, userRequest } from '../../requestMethod';
 import { useState, useEffect } from 'react';
 import { ref, uploadBytes, deleteObject, getDownloadURL } from 'firebase/storage';
 import { useSelector, useDispatch } from 'react-redux';
@@ -33,7 +32,7 @@ const MenuProps = {
 };
 
 const CreateProduct = () => {
-	const [color, setColor] = useState('');
+	
 	const [size, setSize] = useState([]);
 	const [categoryId, setCategoryId] = useState('');
 	const [price, setPrice] = useState(null);
@@ -131,8 +130,7 @@ const CreateProduct = () => {
 				placeholder='Mô tả'
 			/>
 			<label for='fname'>Màu</label>
-			<select
-				onChange={(e) => setColor(e.target.value)}
+			<select			
 				className='select-option-input-create'
 				id='country'
 				name='country'

@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './destinations.css';
+import { useSelector } from 'react-redux';
 const Destinations = () => {
-
+    const {categorys} = useSelector(state => state.category);
+    const [categorySlice,setCategorySlice] = useState([]); 
+    useEffect(()=>{
+        setCategorySlice(categorys.slice(0,2)); 
+    },[categorys.length])
     return (
         <div className="container-desti">
             <div className="destinations">

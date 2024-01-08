@@ -1,6 +1,5 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
-import { product } from "../../data";
-import {publicRequest} from '../../requestMethod';
+import {publicRequest} from '../../http';
 
 export const fetchProducts = createAsyncThunk('products/fetchProducts',async()=>{
      const response = await publicRequest.get('/product'); 
@@ -13,7 +12,6 @@ export const fetchProductsByCategory = createAsyncThunk('products/fetchProductsB
 })
 
 
-
 export const fetchSingleProduct = createAsyncThunk('products/fetchSingleProducts', async (productId)=>{
     const response = await publicRequest.get(`/product/${productId}`)
     return response.data;
@@ -23,65 +21,19 @@ export const fetchSingleProduct = createAsyncThunk('products/fetchSingleProducts
 const productSlice = createSlice({
     name:'products',
     initialState:{
-        isFetching:false,
-        listProducts:[],
-        listProductsByCategory:[],
-        listProductsByCategoryClone:[],
-        singleProducts:{},
-        listProductsClone:[], 
-        filterKey:{
-            color:'',
-            price:''
-        }
+     products:[]
     },
     reducers:{
-        filterProduct(state,action){
-            state.listProducts = state.listProductsClone; 
-
-            if(action.payload.type ==="color"){
-                state.filterKey.color = action.payload.value; 
-            }else{
-                state.filterKey.price = action.payload.value; 
-            }
-
-            state.listProducts = state.listProducts.filter(item=>{
-                return state.filterKey.color !== ''?item.color.includes(state.filterKey.color):item; 
-            })
-
-            if(state.filterKey.price !=='' && state.filterKey.price === 'Cao nhất'){
-                state.listProducts = state.listProducts.sort((x,y)=>{
-                    return parseFloat(y.price) - parseFloat(x.price)
-                })
-            }else if(state.filterKey.price !=='' && state.filterKey.price === 'Thấp nhất'){
-                state.listProducts = state.listProducts.sort((x, y) => {
-                    return parseFloat(x.price) - parseFloat(y.price)
-                })
-            }
-
-        }
+       
     }, 
     extraReducers:(builder)=>{
         builder.addCase(fetchProducts.fulfilled,(state,action)=>{
-            state.listProducts = [];
-            state.listProductsClone = []; 
-            state.listProducts.push(...action.payload);
-            state.listProductsClone.push(...action.payload)
-            localStorage.setItem('products',JSON.stringify(state.listProducts)); 
+           state.products = action.payload.data;
         })
-        builder.addCase(fetchProductsByCategory.fulfilled,(state,action)=>{
-            state.listProductsByCategory = [];
-            state.listProductsByCategoryClone = []; 
-            state.listProductsByCategory.push(...action.payload);
-            state.listProductsByCategoryClone.push(...action.payload)
-            localStorage.setItem('products',JSON.stringify(state.listProductsByCategory)); 
-        })
-        builder.addCase(fetchSingleProduct.fulfilled,(state,action)=>{
-            state.singleProducts = {...action.payload};
-            state.isFetching = false; 
-        })
+     
     }
 })
 
 
-export const {filterProduct} = productSlice.actions; 
+export const {} = productSlice.actions; 
 export default productSlice.reducer; 
