@@ -1,18 +1,10 @@
 const mongoose = require('mongoose');
 const Order = new mongoose.Schema({
-    userId: { type: String, required: true },
-    userName:{type:String,required:true},
-    product: [{
-        productId :{type:String,required:true},
-        productName:{type:String,required:true},
-        productDesc:{type:String,required:true},
-        quantity:{type:Number,required:true},
-        size:{type:String},
-        color:{type:String,required:true},
-        total:{type:Number,required:true},
-        image:{type:String,required:true}
-    }],
-    totalOrder:{type:Number,required:true},
+    product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'Product'
+    },
+    totalMonney:{type:Number,required:true},
     phone:{type:Number,required:true}, 
     address:{type:String,required:true},
     methodPay:{type:String,default:"paypal",required:true},

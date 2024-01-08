@@ -1,53 +1,88 @@
 
-const productServices = require('../services/productService')
-
+const Product = require('../models/productModel');
 module.exports = {
     createProduct:async (req,res,next)=>{
         try {
-            const product = await productServices.createProduct(req.body); 
-            res.status(201).json(product); 
-        } catch (error) {
-            next(error)
+            const productModel = new Product(req.body); 
+            const product = await productModel.save(); 
+            res.status(201).json({
+                success:true,
+                data:product
+            }); 
+        } catch (error) {          
         }
     },
     getAllProduct:async(req,res,next)=>{
         try {
-           const products = await productServices.getAllProduct(); 
-           res.status(200).json(products); 
+           const products = await Product.find(); 
+           res.status(200).json({
+            success:true,
+            data:products
+           }); 
         } catch (error) {
            res.status(500).json(error);  
         }
     },
 
-    getProductsByCategory:async(req,res,next)=>{
+    getByCategory:async(req,res,next)=>{
         try {
-           const products = await productServices.getProductsByCategory(req.params.categoryId); 
-           res.status(200).json(products); 
+            const product = await Product.find({categoryId:req.params.id}); 
+            res.status(200).json({
+                success:true,
+                data:product
+            })
         } catch (error) {
-           res.status(500).json(error);  
+           res.status(500).json(error); 
         }
     },
-
     getSingleProduct:async(req,res,next)=>{
         try {
-            const product = await productServices.getSingleProduct(req.params.id); 
-            res.status(200).json(product)
+            const product = await Product.findById(req.params.id); 
+            res.status(200).json({
+                success:true,
+                data:product
+            })
         } catch (error) {
            res.status(500).json(error); 
         }
     },
     deleteProduct:async(req,res,next)=>{
         try {
-            await productServices.deleteProduct(req.params.id); 
-            res.status(200).json('delete product success !'); 
+
+            const productExist = await Product.findById(req.params.id); 
+            if(!productExist){
+                res.status(404).json({
+                    success:false,
+                    data:null
+                }); 
+            }
+            await product.findByIdAndDelete(req.params.id); 
+            res.status(200).json({
+                success:true,
+                data:1
+            }); 
         } catch (error) {
             res.status(500).json(error);
         }
     },
     updateProduct:async(req,res,next)=>{
         try {
-            await productServices.updateProduct({productId:req.params.id,productUpdate:req.body}); 
-            res.status(200).json('delete product success !'); 
+
+            const productExist = await Product.findById(req.params.id); 
+            if(!productExist){
+                res.status(404).json({
+                    success:false,
+                    data:null
+                }); 
+            }
+     
+            const product = await  product.findByIdAndUpdate({_id:req.params.id},req.body,{
+                new:true
+            }); 
+            res.status(200).json({
+                success:true,
+                data:product
+            }); 
         } catch (error) {
             res.status(500).json(error);
         }

@@ -3,7 +3,6 @@ const orderService = require('../services/orderService');
 
 
 module.exports = {
-
     getOrderByUserId:async(req,res,next)=>{
         try {
             const orders = await orderService.getOrderByUserId(req.params); 

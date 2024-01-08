@@ -13,12 +13,12 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.5.2",
     "nodemailer": "^6.7.8",
-    "nodemon": "^2.0.19",
+    "nodemon": "^2.0.22",
     "path": "^0.12.7",
     "xlsx": "^0.18.5"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "test": "jest --watch"
   },
   "author": "",
