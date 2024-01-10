@@ -8,7 +8,8 @@ module.exports = {
                 success:true,
                 data:schedule
             }); 
-        } catch (error) {          
+        } catch (error) { 
+            console.log(error);          
         }
     },
     getAllSchedule:async(req,res,next)=>{

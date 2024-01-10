@@ -5,8 +5,6 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchSingleProduct } from '../../store/slice/productSlice';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import StarOutlineOutlinedIcon from '@mui/icons-material/StarOutlineOutlined';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Slider from "react-slick";
 import { feature } from '../../data';
@@ -14,43 +12,20 @@ import { feature } from '../../data';
 const SingleProduct = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const productId = location.pathname.split('/')[2];
-  const { isFetching } = useSelector(state => state.product);
-  const [listProducts, setListProducts] = useState([]);
-  const singleProducts = listProducts?.find(item => item._id === productId);
-  const dispatch = useDispatch();
+  const tourId = location.pathname.split('/')[2];
+  const dispatch = useDispatch(); 
 
-  const [quantityCart, setQuantityCart] = useState(1);
+  const {singleTour} = useSelector(state => state.product); 
 
-  useEffect(() => {
-    const products = JSON.parse(localStorage.getItem('products'));
-    setListProducts(products)
-  }, [])
-  const handleQuantityClick = (type) => {
-    if (type === "decrement") {
-      quantityCart > 1 && setQuantityCart(quantityCart => quantityCart - 1)
-    } else {
-      setQuantityCart(quantityCart => quantityCart + 1);
-    }
-  }
-
-
-  const handleAddToCart = () => {
-    const product = {
-      _id: singleProducts._id,
-      name: singleProducts.name,
-      desc: singleProducts.desc,
-      image: singleProducts.image,
-      color: singleProducts.color,
-      price: singleProducts.price,
-      quantity: quantityCart
-    }
-    navigate("/instant-book")
+  const handleSetPayment = (item)=>{
+      localStorage.setItem('choose-tour', JSON.stringify(singleTour))
+      localStorage.setItem('choose-schedule', JSON.stringify(item))
   }
 
   useEffect(() => {
-
+    dispatch(fetchSingleProduct(tourId)); 
   }, [])
+
   function SampleNextArrow(props) {
     const { className, style, onClick } = props;
     return (
@@ -124,88 +99,47 @@ const SingleProduct = () => {
       <div className="elementor-widget-wrap">
         <div className="header-link">
           <h2>Tour Detail</h2>
-          <p> <a href="">Home</a> |<a href="">Hotel</a>  | <span> InterContinental Nha Trang 4 </span></p>
+          <p> <a href="">Home</a> |<a href="">Hotel</a>  | <span> InterContinental {singleTour?.name} </span></p>
         </div>
       </div>
       <div className="container">
         <div className="item-detail">
           <div className="detail-left">
             <div className="name-tour-detail">
-              <h2>InterContinental Nha Trang 4</h2>
+              <h2>{singleTour?.name}</h2>
             </div>
             <div className="address">
-              <p>
-                <LocationOnIcon /> 32-34 Tran Phu Street, Khanh Hoa Province, Nha Trang, Vietnam
-              </p>
+             
             </div>
             <div className="feature-wraper">
-              <Slider {...settings}>
-                {feature && feature.map(item => {
-                  return (
+              
                     <div className="feature-item">
-                      <img height={600} width="100%" src={item.url} alt="" />
+                      <img height={600} width="100%" src={singleTour?.image} alt="" />
                     </div>
-                  )
-                })}
-              </Slider>
+             
             </div>
             <div className="">
-              <Slider {...settings2}>
-                <div className="feature-item1">
-                  <div className="item-header1">
-                    <img height={100} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
-                  </div>
-                </div>
-                <div className="feature-item1">
-                  <div className="item-header1">
-                    <img height={100} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
-                  </div>
-                </div>
-                <div className="feature-item1">
-                  <div className="item-header1">
-                    <img height={100} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
-                  </div>
-                </div>
-                <div className="feature-item1">
-                  <div className="item-header1">
-                    <img height={100} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
-                  </div>
-                </div>
-                <div className="feature-item1">
-                  <div className="item-header1">
-                    <img height={100} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
-                  </div>
-                </div>
-                <div className="feature-item1">
-                  <div className="item-header1">
-                    <img height={100} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
-                  </div>
-                </div>
-                <div className="feature-item1">
-                  <div className="item-header1">
-                    <img height={100} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
-                  </div>
-                </div>
-              </Slider>
+            
               <div className="detail-desc">
                 <h2>Description</h2>
-                <p>Located in the heart of a beautiful coastal city along Vietnam's southern coastline, InterContinental Nha Trang offers the ultimate luxury beachside retreat with 277 spacious rooms and suites combined with authentic dining experiences and spa therapies. Sitting on the bay where the blue sea laps the golden sand, you’ll enjoy the perfect blend of renowned InterContinental hospitality and Vietnamese local charm whether it is for a leisure getaway, family vacation or the wedding of your dreams.</p>
+                <p>{singleTour?.desc}</p>
               </div>
+                <h2>Tour Shedules</h2>
               <div className="table-check">
-                    <>
-                      <div className="check-col">Check in: 15:00</div>
-                      <div className="check-col">Check out: 00:00	</div>
-                      <div className="check-col">Front desk: +84-258-3887777</div>
-                      <button className='check-col'><Link className='link' to="/payment">Order</Link></button>
-                    </>
+                  {
+                    singleTour?.schedules.length > 0 && singleTour.schedules.map(item =>{
+                      return (
+                        <>
+                        <div className="check-col">From date: {item.dateStart}</div>
+                        <div className="check-col">To Date: {item.dateEnd}	</div>
+                        <div className="check-col">Hotline: {item.hotline}</div>
+                        <button onClick={()=>handleSetPayment(item)} className='check-col'><Link className='link' to="/payment">Order</Link></button>
+                      </>
+                      )
+                    })
+                  }
 
-                    <>
-                      <div className="check-col">Reservations: 01208 52 175	</div>
-                      <div className="check-col">Currency: USD	</div>
-                      <div className="check-col">Languages: English, Thai, Vietnamese</div>
-                      <button className='check-col'><Link className='link' to="/payment">Order</Link></button>
-                    
-                    </>
+                 
                
             
                 
@@ -255,33 +189,23 @@ const SingleProduct = () => {
             <div className="make-booking">
               <h3>MAKE A BOOKING</h3>
             </div>
-            <p>– Code: VF1206</p>
-            <p>– Place: 32-34 Tran Phu Street, Khanh Hoa Province, Nha Trang, Vietnam</p>
-            <p>– Hotline: 01208 52 175 Days</p>
-            <p>– Utilities: true, true, true, true</p>
-            <p>– Routine: 0.43 mi (0.69km) from destination</p>
+          
+            <p><LocationOnIcon />  {singleTour?.address}</p>         
+           
             <div className="form-group">
             <ul>                                                    
+               
                 <li class="d-block ">
                     <div class="pt-1">
-                        <span class="fw-bold">From:</span><span class="float-end  fw-bold">50.00</span>
+                        <span class="fw-bold">${singleTour?.price} x {singleTour?.personNumber} guests:</span><span class="float-end  fw-bold">${singleTour?.price * singleTour?.personNumber}.00</span>
                     </div>
                 </li>
                 <li class="d-block ">
                     <div class="pt-1">
-                        <span class="fw-bold">$150.00 x 1 guests:</span><span class="float-end  fw-bold">$150.00</span>
+                        <span class="fw-bold">Booking fee + tax:</span><span class="float-end  fw-bold">0.00</span>
                     </div>
                 </li>
-                <li class="d-block ">
-                    <div class="pt-1">
-                        <span class="fw-bold">Booking fee + tax:</span><span class="float-end  fw-bold">$10.00</span>
-                    </div>
-                </li>
-                <li class="d-block ">
-                    <div class="pt-1">
-                        <span class="fw-bold">Book now & Save:</span><span class="float-end  fw-bold">-$15</span>
-                    </div>
-                </li>
+               
                 <li class="d-block ">
                     <div class="pt-1">
                         <span class="fw-bold">Other fees</span><span class="float-end  fw-bold">Free</span>
@@ -290,7 +214,7 @@ const SingleProduct = () => {
 
                 <li class="d-block border-t">
                     <div class="pt-1">
-                        <span class="fw-bold">Total</span><span class="float-end  fw-bold">$165</span>
+                        <span class="fw-bold">Total</span><span class="float-end  fw-bold">$ {singleTour?.price * singleTour?.personNumber}</span>
                     </div>
                 </li>
             </ul>

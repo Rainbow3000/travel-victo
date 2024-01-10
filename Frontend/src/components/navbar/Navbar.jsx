@@ -9,39 +9,16 @@ import { useEffect,useRef} from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector,useDispatch } from 'react-redux'; 
 import MenuSide from '../menuSide/MenuSide';
-
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import {logout} from '../../store/slice/userSlice'
 const Navbar = () => {
     const dispatch = useDispatch(); 
-    const location = useLocation(); 
-    const path = location.pathname.split('/')[1];
-    const [menuClick,setMenuClick]  = useState(false)
-    const menuRef = useRef(); 
-    useEffect(()=>{
-        setMenuClick(false); 
-    },[path])
     
-    useEffect(() => {
-        const data = JSON.parse(localStorage.getItem('cart'));
-        const dataUser = JSON.parse(localStorage.getItem('user'));
-        if(dataUser){
-            
-        }
-        if (data) {
-   
-        }
-    }, [dispatch])
+    const {user} = useSelector(state => state.user); 
+    
 
-      
-      
-        if(menuClick === true){
-            menuRef.current.style.transform = "translateX(0%)";
-        }
-    const handleLogout =()=>{
-        alert('Đăng xuất thành công !'); 
-    }
 
-  
     return (
 
 <div className='container-nav'>
@@ -70,24 +47,45 @@ const Navbar = () => {
                         <li>
 							<Link to='/destination'>Destinations</Link>
 						</li>
-                        <li>
-							<Link to='/travel-list'>TOURS</Link>
-						</li>
+                     
                         <li>
 							<Link to='/hotel'>Hotel</Link>
 						</li>
                         <li>
 							<Link to='/news'>News</Link>
 						</li>
-                        <li>
-							<Link to='/'>Contact</Link>
-						</li>
+                        {
+                            user !== null && (
+                                <li>
+                                    <Link to='/booking'>BOOKING (1)</Link>
+                                </li>
+
+                            )
+                        }
 						
 					</ul>
 				</div>
                 <div className='navbar-right'>
 					<div className='navbar-center-input'>
-                    <Button className='btn-book-now' variant="contained">Book Now</Button>
+                   
+                    {
+                        user  === null ? (
+                            <Button className='btn-book-now' variant="contained">
+                                                       
+                                <Link className='btn-link' to="/login">Login | Register</Link>
+                                                     
+                            </Button>
+                        ):(
+                            <>
+                            <Button className='btn-book-now' variant="contained" onClick={()=> dispatch(logout())}>
+                                                       
+                                <Link className='btn-link' to="#">{user?.userName} &nbsp; &nbsp;<ExitToAppIcon/></Link>
+                                                 
+                            </Button>
+                           
+                            </>
+                        )
+                    }
 
 					</div>
 				</div>

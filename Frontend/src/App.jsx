@@ -23,6 +23,7 @@ import {
   Route,
 } from "react-router-dom";
 import Payment from './pages/payment/Payment'
+import Booking from './pages/booking/Booking'
 const App = () => { 
   return (
         <div className='page-wrapper' >
@@ -31,18 +32,19 @@ const App = () => {
                 <NavbarInfo/>
                 <Routes>
                     <Route path='/'  exact element={<Home />} />
-                    <Route path='/single/1' element={<SingleProduct />} />
+                    <Route path='/single/:id' element={<SingleProduct />} />
                     <Route path='/instant-book' element={<Cart />} />
                     <Route path='/login' element={<Login/>} />
                     <Route path='/register' element={<Register/>} />
                     <Route path='/address' element={<Address/>}/>
                     <Route path='/destination' element={<Destination/>}/>
-                    <Route path='/travel-list' element={<TravelList/>}/>
+                    <Route path='/travel-list/:id' element={<TravelList/>}/>
                     <Route path='/news' element={<News/>}/>
                     <Route path='/hotel' element={<Hotel/>}/>
                     <Route path='/about-us' element={<AboutUs/>}/>
                     <Route path='/payment' element={<Payment/>}/>
                     <Route path='/success' element={<Success/>}/>             
+                    <Route path='/booking' element={<Booking/>}/>             
                     <Route path="/productbycategory/:id" element={<ProductByCategory/>}  /> 
                     <Route path="*" element={<NotFound/>} />
                 </Routes>            

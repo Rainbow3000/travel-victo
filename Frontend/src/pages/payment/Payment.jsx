@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import './payment.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import {createOrder,resetSuccess} from '../../store/slice/orderSlice'
+import { useNavigate } from 'react-router-dom';
+import { IoIosInformationCircleOutline } from "react-icons/io";
+import { IoLocationSharp } from "react-icons/io5";
+import { MdOutlineDateRange } from "react-icons/md";
+import { FaPhone } from "react-icons/fa";
+import { FaDollarSign } from "react-icons/fa6";
+import { FaInfo } from "react-icons/fa";
 const Payment = () => {
     const [name,setName] = useState(""); 
     const [email,setEmail] = useState(""); 
-    const [phone,setPhone] = useState(""); 
+    const [phoneNumber,setPhoneNumber] = useState(""); 
     const [address,setAddress]= useState(""); 
     const [note,setNote] = useState(""); 
 
@@ -11,12 +20,36 @@ const Payment = () => {
     const [emailErr,setEmailErr] = useState(""); 
     const [phoneErr,setPhoneErr] = useState(""); 
     const [addressErr,setAddressErr]= useState(""); 
-    const [noteErr,setNoteErr] = useState(""); 
+	const [payType,setPayType] = useState("Normal"); 
+	const [tourInfo,setTourInfo] = useState(null); 
+	const [scheduleInfo,setScheduleInfo] = useState(null); 
+	const {success}  = useSelector(state => state.order)
+	const {user}  = useSelector(state => state.user)
+	const dispatch = useDispatch(); 
+	const navigate = useNavigate()
+	
+	useEffect(()=>{
+
+		if(user === null){
+			navigate('/')
+			return; 
+		}
+
+		setTourInfo( JSON.parse(localStorage.getItem('choose-tour')))
+		setScheduleInfo(JSON.parse(localStorage.getItem('choose-schedule')))
+	},[])
+
+
+	if(success === true){
+		dispatch(resetSuccess()); 
+		alert('Order successfully !'); 
+		navigate('/booking'); 
+	}
 
 
     const handleSubmit = (e)=>{
         e.preventDefault(); 
-        const check = 0; 
+        let check = 0; 
         if(name.trim() === ""){
             setNameErr("Name is required")
             check = 1; 
@@ -26,7 +59,7 @@ const Payment = () => {
             setEmailErr("Email is required")
             check = 1; 
         }
-        if(phone.trim() === ""){
+        if(phoneNumber.trim() === ""){
             setPhoneErr("Phone is required")
             check = 1; 
         }
@@ -36,23 +69,26 @@ const Payment = () => {
             check = 1; 
         }
 
-        if(note.trim() === ""){
-            setNoteErr("Note is required")
-            check = 1; 
-        }
-
+      
         if(check === 1) return; 
 
         const customer = {
             name,
-            email,phone,
+            email,
             address,
+			phoneNumber,
             note
         }
 
         const order = {
-
+			product : tourInfo?._id,
+			schedule: scheduleInfo?._id,
+			totalMonney:tourInfo.price,
+			payType
         }
+
+		dispatch(createOrder({customer,order}))
+		
 
     }
 
@@ -80,35 +116,40 @@ const Payment = () => {
 										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group">
-													<input type="text" class="form-control" name="name" id="name" placeholder="Name" onChange={(e)=> setName(e.target.value)}/>
+													<span style={{color:'red'}}>{nameErr}</span>
+													<input value={name} type="text" class="form-control" name="name" id="name" placeholder="Name" onChange={(e)=> setName(e.target.value)}/>
 												</div>
 											</div>
 											<div class="col-md-6"> 
 												<div class="form-group">
-													<input type="email" class="form-control" name="email" id="email" placeholder="Email" onChange={(e)=> setEmail(e.target.value)}/>
+													<span style={{color:'red'}}>{emailErr}</span>
+
+													<input value={email} type="email" class="form-control" name="email" id="email" placeholder="Email" onChange={(e)=> setEmail(e.target.value)}/>
 												</div>
 											</div>
 											<div class="col-md-12">
 												<div class="form-group">
-													<input type="text" class="form-control" name="subject" id="subject" placeholder="Phone" onChange={(e)=> setPhone(e.target.value)}/>
+													<span style={{color:'red'}}>{phoneErr}</span>
+													<input value={phoneNumber} type="text" class="form-control" name="subject" id="subject" placeholder="Phone" onChange={(e)=> setPhoneNumber(e.target.value)}/>
 												</div>
 
                                                 <div class="form-group">
-													<input type="text" class="form-control" name="subject" id="subject" placeholder="Address" onChange={(e)=> setAddress(e.target.value)}/>
+													<span style={{color:'red'}}>{addressErr}</span>
+													<input value={address} type="text" class="form-control" name="subject" id="subject" placeholder="Address" onChange={(e)=> setAddress(e.target.value)}/>
 												</div>
 											</div>
 											<div class="col-md-12">
 												<div class="form-group">
-													<textarea name="message" class="form-control" id="message" cols="30" rows="7" placeholder="Message" onChange={(e)=> setNote(e.target.value)}></textarea>
+													<textarea value={note} name="message" class="form-control" id="message" cols="30" rows="7" placeholder="Message" onChange={(e)=> setNote(e.target.value)}></textarea>
 												</div>
 											</div>
 											<div class="col-md-12" style={{display:'flex'}}>
 												<div class="form-group">
-													<input type="submit" value="ORDER" class="btn btn-primary"/>
+													<input onClick={()=>setPayType('Normal')} type="submit" value="ORDER" class="btn btn-primary"/>
 													<div class="submitting"></div>
 												</div>
                                                 <div class="form-group">
-													<input type="submit" value="ORDER WITH PAYPAL" class="btn btn-primary"/>
+													<input onClick={()=>setPayType('Paypal')}  type="submit" value="ORDER WITH PAYPAL" class="btn btn-primary"/>
 													<div class="submitting"></div>
 												</div>
 											</div>
@@ -123,48 +164,58 @@ const Payment = () => {
 
 
 
-                            <div class="dbox w-100 d-flex align-items-start">
+                            <div style={{display:'flex',alignItem:'center'}}  class="dbox w-100 d-flex align-items-center">
 				        		<div class="icon d-flex align-items-center justify-content-center">
-				        			<span class="fa fa-map-marker"></span>
+								<FaInfo/>
 				        		</div>
-				        		<div class="text pl-3">
-					            <p><span >Tour Name:</span> 198 West 21th Street, Suite 721 New York NY 10016</p>
+				        		<div  style={{marginLeft:10}} class="text pl-3">
+					            <p><span >Tour Name:</span>{tourInfo?.name}</p>
 					          </div>
 				           </div>
  
 
-				        	<div class="dbox w-100 d-flex align-items-start">
+				        	<div style={{display:'flex',alignItem:'center'}}  class="dbox w-100 d-flex align-items-center">
 				        		<div class="icon d-flex align-items-center justify-content-center">
-				        			<span class="fa fa-map-marker"></span>
+				        			<IoLocationSharp/>
 				        		</div>
-				        		<div class="text pl-3">
-					            <p><span>Address:</span> 198 West 21th Street, Suite 721 New York NY 10016</p>
+				        		<div  style={{marginLeft:10}} class="text pl-3">
+					            <p><span>Address:</span> {tourInfo?.address}</p>
 					          </div>
 				           </div>
-				        	<div class="dbox w-100 d-flex align-items-center">
+						   <div style={{display:'flex',alignItem:'center'}}  class="dbox w-100 d-flex align-items-center">
 				        		<div class="icon d-flex align-items-center justify-content-center">
-				        			<span class="fa fa-phone"></span>
+				        			<MdOutlineDateRange/>
 				        		</div>
-				        		<div class="text pl-3">
-					            <p><span>Phone:</span> <a href="tel://1234567920">+ 1235 2355 98</a></p>
+				        		<div  style={{marginLeft:10}} class="text pl-3">
+					            <p><span>From date:</span>{scheduleInfo?.dateStart}</p>
 					          </div>
 				          </div>
-				        	<div class="dbox w-100 d-flex align-items-center">
+						  <div style={{display:'flex',alignItem:'center'}}  class="dbox w-100 d-flex align-items-center">
 				        		<div class="icon d-flex align-items-center justify-content-center">
-				        			<span class="fa fa-paper-plane"></span>
+								<MdOutlineDateRange/>
+
 				        		</div>
-				        		<div class="text pl-3">
-					            <p><span>Email:</span> <a href="mailto:info@yoursite.com">info@yoursite.com</a></p>
+				        		<div  style={{marginLeft:10}} class="text pl-3">
+					            <p><span>To date:</span>{scheduleInfo?.dateEnd}</p>
 					          </div>
 				          </div>
-				        	<div class="dbox w-100 d-flex align-items-center">
+				        	<div  style={{display:'flex',alignItem:'center'}} class="dbox w-100 d-flex align-items-center">
 				        		<div class="icon d-flex align-items-center justify-content-center">
-				        			<span class="fa fa-globe"></span>
+				        			<FaPhone/>
 				        		</div>
-				        		<div class="text pl-3">
-					            <p><span>Website</span> <a href="#">yoursite.com</a></p>
+				        		<div  style={{marginLeft:10}} class="text pl-3">
+					            <p><span>Hotline:</span>{scheduleInfo?.hotline}</p>
 					          </div>
 				          </div>
+				        	<div style={{display:'flex',alignItem:'center'}}  class="dbox w-100 d-flex align-items-center">
+				        		<div class="icon d-flex align-items-center justify-content-center">
+				        			<FaDollarSign/>
+				        		</div>
+				        		<div  style={{marginLeft:10}} class="text pl-3">
+					            <p><span>Price:</span> <a href="mailto:info@yoursite.com">$ {tourInfo?.price}</a></p>
+					          </div>
+				          </div>
+				        	
 			          </div>
 							</div>
 						</div>

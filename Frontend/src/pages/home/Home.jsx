@@ -22,7 +22,7 @@ const Home = () => {
          <Destinations/>
          <Hotels/>
          <TravelList/>
-         <News/>
+     
     </> 
 
         

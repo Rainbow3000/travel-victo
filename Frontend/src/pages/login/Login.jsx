@@ -1,70 +1,71 @@
-import React from 'react'
-import {useEffect} from 'react'
+
+import { useEffect, useState } from 'react';
 import './login.scss'
-import { useDispatch,useSelector} from 'react-redux'
-import { useNavigate,Link } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import {login,resetSuccess} from '../../store/slice/userSlice'
+import { useDispatch, useSelector } from 'react-redux';
+const Login = () => {
 
-const Login = () => { 
-  const {register,handleSubmit,formState:{errors}} = useForm(); 
-  const dispatch = useDispatch(); 
-  const {errorMessage} = useSelector(state => state.user); 
-  const user = JSON.parse(localStorage.getItem('user'));
-  const query = window.location.search; 
-  const queryPath = query.split('=')[1]; 
-
-  let navigate = useNavigate(); 
-  if (user) {
-    if(queryPath){
-      navigate(`/${queryPath}`); 
-    }else{
-      navigate('/');
+  const [email,setEmail] = useState(""); 
+  const [password,setPassword] = useState(""); 
+  const [emailErr,setEmailErr]  = useState("")
+  const [passwordErr,setPasswordErr]  = useState("")
+  const dispatch = useDispatch (); 
+  const {success,user,error} = useSelector(state => state.user); 
+  console.log(1111,error)
+  const handleSubmit = (e)=>{
+    let flag = 0;  
+    e.preventDefault(); 
+    if(email.trim().length === 0){
+      setEmailErr('Email is required.')
+      flag = 1; 
     }
-  }
-  const onSubmit = (data)=>{
-    navigate('/');
-    if(errorMessage){
+
+    if(password.trim().length === 0){
+      setPasswordErr('Password is required.')
+      flag = 1; 
+    }
+
+    if(flag === 1){
       return; 
     }
-  
+
+    dispatch(login({email,password})); 
+  }
+
+  const navigate = useNavigate(); 
+  if(success === true){
+    alert('Login success !')
+    dispatch(resetSuccess()); 
+    navigate('/')
   }
 
   useEffect(()=>{
-    const user = JSON.parse(localStorage.getItem('user'));
-   if (user) {
-    if(queryPath){
-      navigate(`/${queryPath}`); 
-    }else{
-      navigate('/');
+    if(user !== null){
+      navigate('/')
     }
-  }
   },[])
-  return (
-    <div className='login-container'>
-      <div className="login-wraper">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <h1>ĐĂNG NHẬP</h1>    
-          <div>
-            <span style={{textAlign:'center',color:'red'}}>{errorMessage && errorMessage.login}</span>
-            <label htmlFor="">Email <span>*</span></label>
-            <span className='error-login'>{errors.email?.type === "required" && "Email không được trống!"}</span>
-            <span className='error-login'>{errors.email?.type === "pattern" && "Email không hợp lệ!"}</span>
-            <input required name='email' type="email" placeholder='Email' {...register("email", { required: true, pattern: /^[A-Z0-9 ._%+-]+@[A-Z0-9 .-]+\.[A-Z]{2,}$/i })} />
-          </div>
-          <div>
-            <label htmlFor="">Mật khẩu <span>*</span></label>
-            <span className='error-login'>{errors.password?.type === "required" && "Mật khẩu không được trống!"}</span>
-            <span className='error-login'>{errors.password?.type === "minLength" && "Mật khẩu phải ít nhất 8 kí tự"}</span>
-            <input name='password' type="password" placeholder='Mật khẩu' {...register("password",{ required: true, minLength: 8})} />
-          </div>
-          <div>
-            <Link to="/register">Bạn chưa có tài khoản ?</Link>
-            <button>ĐĂNG NHẬP</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  )
-}
+  
 
-export default Login
+  return (
+    <form className="form-login" onSubmit={handleSubmit}>
+      <span style={{color:'red'}}>{error}</span>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Email</label><br/>
+        <span style={{color:'red'}}>{emailErr}</span>
+        <input value={email} type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onChange={(e)=> setEmail(e.target.value)}/>
+        
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Password</label><br/>
+        <span style={{color:'red'}}>{passwordErr}</span>
+        <input value={password} type="password" class="form-control" id="exampleInputPassword1" onChange={(e)=> setPassword(e.target.value)}/>
+      </div>
+      <span>You don't have an account ? <Link style={{textDecoration:'underline',color:'blue'}} to="/register">Register</Link></span>
+     
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+  );
+};
+
+export default Login;

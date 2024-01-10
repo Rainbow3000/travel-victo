@@ -14,13 +14,9 @@ const Order = new mongoose.Schema({
     },
     totalMonney:{type:Number,required:true},
     payType:{
-        type:Number,
-        default:0
-    },
-    namePayType:{
         type:String
     },
-    isPaid:{type:Boolean,default:false,required:true},
+   
     status:{type:Number,require:true,default:0}
 }, { timestamps: true })
 

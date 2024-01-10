@@ -1,22 +1,33 @@
 
 const Order = require('../models/orderModel')
+const Product = require('../models/productModel')
 const Customer = require('../models/customerModel')
 
 module.exports = {
     getOrderByUserId:async(req,res,next)=>{
         try {
-            const orders = await orderService.getOrderByUserId(req.params); 
-            res.status(200).json(orders);  
+            const orders = await Order.find({customer:req.params._id}).populate({
+                path:'product'
+            }).populate({
+                path:'schedule'
+            }).populate({
+                path:'customer'
+            }); ; 
+            
+            res.status(200).json({
+                success:true,
+                data:orders
+            });  
         } catch (error) {
             res.status(500).json(error); 
         }
     }, 
     createOrder:async(req,res,next)=>{
-        try {
-            const newCustomer = new Order(req.body.customer); 
-            const customer  = await newCustomer.save(); 
+        try {        
+            const newCustomer = new Customer(req.body.customer); 
+            const customer  = await newCustomer.save();     
             const newOrder = new Order(req.body.order); 
-            newOrder.customer = customer._id; 
+            newOrder.customer = customer.user; 
             const order  = await newOrder.save(); 
             res.status(200).json({
                 success:true,
@@ -32,7 +43,10 @@ module.exports = {
     getAllOrder:async(req,res,next)=>{
         try {
             const orders = await Order.find(); 
-            res.status(200).json(orders); 
+            res.status(200).json({
+                success:true,
+                data:orders
+            }); 
         } catch (error) {
             res.status(500).json(error); 
         }
@@ -47,44 +61,63 @@ module.exports = {
     }, 
     deleteOrder:async(req,res,next)=>{
         try {
-            await orderService.deleteOrder(req.params.id);
+            await Order.findByIdAndDelete(req.params.id);
             res.status(200).json('delete order success !'); 
         } catch (error) {
             res.status(500).json(error); 
         }
     },
-    orderStat:async(req,res,next)=>{
+    orderCharts:async(req,res,next)=>{
         try {
-            const order = await orderService.orderStat(); 
-            res.status(200).json(order);
+            const date = new Date();
+            const time = new Date(date.setMonth(date.getMonth() + 1));
+            const order = await Order.aggregate([
+                {
+                    $match:{
+                        createdAt: { $lte: time }
+                    }
+                },
+                {
+                    $project:{
+                        month:{$month:"$createdAt"},
+                        year:{$year:"$createdAt"},
+                    }
+                }, 
+                {
+                    $group:{
+                        _id: { year: '$year', month: '$month' },
+                        quantity:{$count:{}},
+                    }
+                },
+                {
+                    $sort:{_id:1}
+                }
+            ])
+
+            const orders= await Order.find(); 
+            const product = await Product.find(); 
+
+            const total  = orders.reduce((x,y)=>{
+                return x + y.totalMonney; 
+            },0); 
+
+            const cancel = orders.filter(item => item.status === -1); 
+
+            res.status(200).json({
+                success:true,
+                data:{
+                    order,
+                    total,
+                    cancel:cancel.length,
+                    product:product.length
+                }
+            }); 
+
         } catch (error) {
             res.status(500).json(error)
         }
     },
-    orderIncome:async(req,res,next)=>{
-        try {
-           const {percent,sumThisMonth} = await orderService.orderIncome(); 
-           res.status(200).json({percent,sumThisMonth})        
-        } catch (error) {
-            console.log(error)
-            res.status(500).json(error); 
-        }
-    },
-    countOrderReturn:async(req,res,next)=>{
-        try {
-            const {returnThisMonth,percent} = await orderService.countOrderReturn(); 
-            res.status(200).json({returnThisMonth,percent});
-        } catch (error) {
-            res.status(500).json(error); 
-        }
-    },
-    compareOrder:async(req,res,next)=>{
-        try {
-            const {orderSuccess,orderCancelled} = await orderService.compareOrder(); 
-        } catch (error) {
-            res.status(500).json(error)
-        }
-    },
+  
     exportToExcel:async(req,res,next)=>{
         try {
             const data = await orderService.exportToExcel(req.body); 

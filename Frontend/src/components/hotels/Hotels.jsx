@@ -2,6 +2,7 @@ import React from 'react';
 import './hotels.css';
 import Slider from 'react-slick';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Hotels = () => {
     const {products} = useSelector(state => state.product); 
@@ -48,90 +49,33 @@ const Hotels = () => {
             </div>
             <div className="container-hotel">
                 <Slider {...settings}>
-                    <div className="feature-item1">
-                        <div className="item-header1">
-                            <a href="/single/1">
-                                <img height={250} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
-                            </a>
-                        </div>
-                        <div className="item-main1">
-                            <div className='feature-item-info1'>
-                                <a href="/single/1">
-                                    <h2>InterContinental Nha Trang 1</h2>
-                                </a>
-                                <p>150$ | Per Person</p>
-                                <span>Located in the heart of a beautiful coastal city along Vietnam's southern coastline, InterContinental Nha Trang offers the ultimate luxury…</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="feature-item1">
-                        <div className="item-header1">
-                            <a href="/single/1">
-                                <img height={250} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
-                            </a>
-                        </div>
-                        <div className="item-main1">
-                            <div className='feature-item-info1'>
-                                <a href="/single/1">
-                                    <h2>InterContinental Nha Trang 1</h2>
-                                </a>
-                                <p>150$ | Per Person</p>
-                                <span>Located in the heart of a beautiful coastal city along Vietnam's southern coastline, InterContinental Nha Trang offers the ultimate luxury…</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="feature-item1">
-                        <div className="item-header1">
-                            <a href="/single/1">
-                                <img height={250} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
-                            </a>
-                        </div>
-                        <div className="item-main1">
-                            <div className='feature-item-info1'>
-                                <a href="/single/1">
-                                    <h2>InterContinental Nha Trang 1</h2>
-                                </a>
-                                <p>150$ | Per Person</p>
-                                <span>Located in the heart of a beautiful coastal city along Vietnam's southern coastline, InterContinental Nha Trang offers the ultimate luxury…</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="feature-item1">
-                        <div className="item-header1">
-                            <a href="/single/1">
-                                <img height={250} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
-                            </a>
-                        </div>
-                        <div className="item-main1">
-                            <div className='feature-item-info1'>
-                                <a href="/single/1">
-                                    <h2>InterContinental Nha Trang 1</h2>
-                                </a>
-                                <p>150$ | Per Person</p>
-                                <span>Located in the heart of a beautiful coastal city along Vietnam's southern coastline, InterContinental Nha Trang offers the ultimate luxury…</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="feature-item1">
-                        <div className="item-header1">
-                            <a href="/single/1">
-                                <img height={250} width="100%" src='https://res.cloudinary.com/dgyolr1sq/image/upload/v1703133154/nt3-420x260_btmy7c.jpg' alt="" />
-                            </a>
-                        </div>
-                        <div className="item-main1">
-                            <div className='feature-item-info1'>
-                                <a href="/single/1">
-                                    <h2>InterContinental Nha Trang 1</h2>
-                                </a>
-                                <p>150$ | Per Person</p>
-                                <span>Located in the heart of a beautiful coastal city along Vietnam's southern coastline, InterContinental Nha Trang offers the ultimate luxury…</span>
-                            </div>
-                        </div>
-                    </div>
+                    {
+                        products.length > 0 && products.filter(item => item.isSale).map(item =>{
+                            return (
+                                <Link to={`/single/${item._id}`}>
+                                    <div className="feature-item1">
+                                        <div className="item-header1">
+                                            
+                                                <img height={250} width="100%" src={item.image} alt="" />
+                                            
+                                        </div>
+                                        <div className="item-main1">
+                                            <div className='feature-item-info1'>
+                                               
+                                                    <h2>{item.name}</h2>
+                                                
+                                                <p>{item.price}$ | {item.personNumber} Person</p>
+                                                <span>{item.desc}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Link>
+                            )
+                        })
+                    }
+                  
                 </Slider>
-                <div className="btn-more">
-                    <button>VIEW MORE</button>
-                </div>
+              
             </div>
       </div>
     )

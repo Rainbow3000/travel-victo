@@ -1,5 +1,6 @@
 
 const Product = require('../models/productModel');
+const Schedule = require('../models/scheduleModel');
 module.exports = {
     createProduct:async (req,res,next)=>{
         try {
@@ -9,7 +10,11 @@ module.exports = {
                 success:true,
                 data:product
             }); 
-        } catch (error) {          
+        } catch (error) {       
+            res.status(500).json({
+                success:false,
+                data:error
+            });   
         }
     },
     getAllProduct:async(req,res,next)=>{
@@ -38,9 +43,18 @@ module.exports = {
     getSingleProduct:async(req,res,next)=>{
         try {
             const product = await Product.findById(req.params.id); 
+            if(!product){
+                res.status(404).json({
+                    success:false,
+                    data:null
+                }); 
+            }
+            const schedule = await Schedule.find({product:product._id});  
+            product._doc.schedules = schedule; 
             res.status(200).json({
                 success:true,
-                data:product
+                data:product,
+                
             })
         } catch (error) {
            res.status(500).json(error); 
@@ -48,7 +62,7 @@ module.exports = {
     },
     deleteProduct:async(req,res,next)=>{
         try {
-
+            console.log(req.params.id)
             const productExist = await Product.findById(req.params.id); 
             if(!productExist){
                 res.status(404).json({
@@ -56,7 +70,7 @@ module.exports = {
                     data:null
                 }); 
             }
-            await product.findByIdAndDelete(req.params.id); 
+            await Product.findByIdAndDelete(req.params.id); 
             res.status(200).json({
                 success:true,
                 data:1
@@ -76,7 +90,7 @@ module.exports = {
                 }); 
             }
      
-            const product = await  product.findByIdAndUpdate({_id:req.params.id},req.body,{
+            const product = await  Product.findByIdAndUpdate({_id:req.params.id},req.body,{
                 new:true
             }); 
             
@@ -85,6 +99,7 @@ module.exports = {
                 data:product
             }); 
         } catch (error) {
+            console.log(error); 
             res.status(500).json(error);
         }
     }

@@ -4,7 +4,7 @@ const ScheduleSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:'Product'
     },
-    transportType:{
+    hotline:{
         type:String
     },
     dateStart:{
@@ -13,9 +13,7 @@ const ScheduleSchema = new mongoose.Schema({
     dateEnd:{
         type:String
     },
-    price:{
-        type:String
-    },
+  
     status:{type:Number,require:true,default:0}
 }, { timestamps: true })
 

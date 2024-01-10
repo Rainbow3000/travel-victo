@@ -1,0 +1,386 @@
+
+import {
+  Badge,
+  Card,
+  CardHeader,
+  CardFooter,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  Media,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+  Progress,
+  Table,
+  Container,
+  Row,
+  UncontrolledTooltip,
+} from "reactstrap";
+// core components
+import Header from "../components/Headers/Header.js";
+import { useEffect, useState } from "react";
+import {request} from '../http.js'
+
+import uuid from 'react-uuid';
+import storage from '../storage'; 
+import {ref as refStorage,uploadBytes, deleteObject , getDownloadURL} from 'firebase/storage'
+const Tour = () => {
+  const [categoryList,setCategoryList] = useState([]); 
+  const [showOverlay,setShowOverlay] = useState(false); 
+  const [categoryUpdate,setCategoryUpdate] = useState(""); 
+  const [previewImage,setPreviewImage] = useState(""); 
+  const [name,setName] = useState(""); 
+  const [typeForm,setTypeForm] = useState(1); 
+  const [id,setId] = useState(null); 
+  const [image,setImage] = useState(""); 
+  const [tour,setTour] = useState([]); 
+  const [category,setCategory] = useState(""); 
+  const [desc,setDesc] = useState("")
+  const [personNumber,setPersonNumber] = useState(""); 
+  const [time,setTime] = useState(""); 
+  const [address,setAddress] = useState(""); 
+  const  [price,setPrice] = useState(0); 
+  const [isSale,setIsSale] = useState(0); 
+  const getTour = async()=>{
+    try {
+      const response = await request.get('product'); 
+      setTour(response.data.data); 
+    } catch (error) {
+      
+    }
+  }
+
+  const getCategory = async()=>{
+    try {
+      const response = await request.get('category'); 
+      setCategoryList(response.data.data); 
+    } catch (error) {
+      
+    }
+  }
+
+  const handleChooseImage = (event)=>{
+    const file = event.target.files[0]; 
+          const fileName =  `images/${uuid()}-${file?.name}`; 
+          const storageRef = refStorage(storage,fileName); 
+          uploadBytes(storageRef,file).then((snapshot)=>{
+              getDownloadURL(refStorage(storage,fileName)).then(downloadUrl =>{
+                setImage(`${downloadUrl}@-@${fileName}`)    
+                setPreviewImage(`${downloadUrl}@-@${fileName}`)                    
+              })
+          })
+}
+
+const handleSubmit = async(e)=>{
+  e.preventDefault(); 
+
+  if(typeForm === 1){
+    try {
+      await request.post('product',{
+        image,
+        name,
+        desc,
+        category,
+        personNumber,
+        time,
+        price,
+        address,
+        isSale
+      })
+      getTour(); 
+      setShowOverlay(false); 
+    } catch (error) {
+      
+    }
+  }else {
+    try {
+      await request.put(`product/${id}`,{
+        image,
+        name,
+        desc,
+        category,
+        personNumber,
+        time,
+        price,
+        isSale,
+        address
+      })
+      getTour(); 
+      setShowOverlay(false); 
+    } catch (error) {
+      
+    }
+  }
+
+}
+
+
+const handleRemove = async(id)=>{
+  try {
+    await request.delete(`product/${id}`)
+    getTour(); 
+  } catch (error) {
+    
+  }
+}
+
+
+const handleUpdate = (item)=>{
+  setName(item.name);
+  setAddress(item.address);
+  setPersonNumber(item.personNumber);
+  setTime(item.time); 
+  setImage(item.image);
+  setCategory(item.category);
+  setPrice(item.price)
+  setShowOverlay(true); 
+  setDesc(item.desc)
+  setTypeForm(2); 
+  setId(item._id); 
+}
+
+
+  useEffect(()=>{
+    getTour(); 
+    getCategory()
+  },[])
+
+
+  return (
+    <>
+    {
+      showOverlay === true && (
+        <div className="overlay"> 
+          <div className="model">
+            <form style={{zIndex:999999999}} onSubmit={handleSubmit}>
+              <div style={{position:'absolute',right:20,top:5,fontSize:25,cursor:'pointer'}}>
+                <i class="fa-solid fa-xmark" onClick={()=>setShowOverlay(false)}></i>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Tour Name</label>
+                <input value={name} type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter name" onChange={(e)=> setName(e.target.value)}/>
+            
+              </div>
+
+              <div class="form-group">
+                <label for="exampleInputEmail1">Description</label>
+                <input value={desc} type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter description" onChange={(e)=> setDesc(e.target.value)}/>
+            
+              </div>
+
+              <div class="form-group">
+                <label for="exampleInputEmail1">Address</label>
+                <input value={address} type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter address" onChange={(e)=> setAddress(e.target.value)}/>
+            
+              </div>
+
+              <div class="form-group">
+                <label for="exampleInputEmail1">Date Number</label>
+                <input value={time} type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter date number" onChange={(e)=> setTime(e.target.value)}/>
+            
+              </div>
+
+              <div class="form-group">
+                <label for="exampleInputEmail1">Price</label>
+                <input value={price} type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter price" onChange={(e)=> setPrice(e.target.value)}/>
+            
+              </div>
+
+              <div class="form-group">
+                <label for="exampleInputEmail1">Person Number</label>
+                <input value={personNumber} type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter person number" onChange={(e)=> setPersonNumber(e.target.value)}/>
+            
+              </div>
+
+              <div class="form-group">
+                <label for="exampleInputEmail1">Is Sale</label>
+                <input value={isSale} type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter is sale" onChange={(e)=> setIsSale(e.target.value)}/>
+            
+              </div>
+
+              <div class="form-group" style={{display:'flex',flexDirection:'column'}}>
+                <label for="exampleInputEmail1">Category</label>
+                <select value={category} onChange={(e)=> setCategory(e.target.value)}  class="form-select" aria-label="Default select example" style={{height:40,border:'1px solid #cad1d7',borderRadius:5}}>
+                <option defaultChecked selected value="" disabled>Choose a category</option>
+                  {
+                    categoryList.length > 0 && categoryList.map(item =>{
+                      return (
+                        <option selected value={item._id}>{item.name}</option>
+                      )
+                    })
+                  }
+                </select>
+            
+              </div>
+
+
+             
+              <div class="form-group">
+                <label for="exampleInputPassword1">Image</label>
+                <input type="file" class="form-control" id="exampleInputPassword1" placeholder="Image" onChange={handleChooseImage}/>
+                {
+                  image.trim() !== "" && (
+                    <div>
+                      <img width={150} height={150} src={image} alt=""/>
+                  </div>
+                  )
+                }
+              </div>
+            
+             
+              <button  type="submit" class="btn btn-primary">Create</button>
+            </form>
+          </div>
+        </div>
+      )
+    }
+      <Header />
+      {/* Page content */}
+      <Container className="mt--7" fluid>
+        {/* Table */}
+        <Row>
+          <div className="col">
+            <Card className="shadow">
+            <CardHeader className="border-0 d-flex" style={{justifyContent:'space-between', width:'100%'}}>
+                <h3 className="mb-0">Tour</h3>
+                <button className="btn btn-primary" onClick={()=> setShowOverlay(true)}>Create</button>
+              </CardHeader>
+              <Table className="align-items-center table-flush" responsive>
+                <thead className="thead-light">
+                  <tr>
+                    <th scope="col">Image</th>
+                    <th scope="col">Tour Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Person Number</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Is Sale</th>
+                    <th scope="col">Schedule</th>
+                    <th scope="col">Action</th>                 
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    tour.length > 0 && tour.map(item =>{
+                      return (
+                      <tr>
+                        <th scope="row">
+                          <Media className="align-items-center">
+                            <a
+                             
+                              href="#pablo"
+                              onClick={(e) => e.preventDefault()}
+                            >
+                              <img
+                                width={60}
+                                height={60}
+                                alt="..."
+                                src={item.image}
+                              />
+                            </a>
+                           
+                          </Media>
+                        </th>
+                        <td>{item.name}</td>
+                        <td>
+                          <Badge color="" className="badge-dot mr-4">                         
+                            {item.address}
+                          </Badge>
+                        </td>
+                        <td>{item.time}</td>
+                        <td>
+                          <div className="d-flex align-items-center">
+                            <span className="mr-2">{item.personNumber}</span>                        
+                          </div>
+                        </td>
+                        <td className="text" style={{textWrap:'wrap'}}>
+                            {item.desc.slice(0,55)}
+                        </td>
+                        <td className="text">
+                            {item.price}
+                        </td>
+                        <td className="text">
+                            {item.isSale}
+                        </td>
+                        <td className="text">
+                        <i class="fa-solid fa-eye"></i>
+                        </td>
+                        <td className="text">
+                            <div className="d-flex align-items-center">
+                                <button className="btn btn-warning" onClick={()=>handleUpdate(item)}>Update</button>
+                                <button onClick={()=>handleRemove(item._id)} className="btn btn-danger">Remove</button>
+                              </div>
+                        </td>
+                      </tr>
+                      )
+                    })
+                  }
+                
+                </tbody>
+              </Table>
+              <CardFooter className="py-4">
+                <nav aria-label="...">
+                  <Pagination
+                    className="pagination justify-content-end mb-0"
+                    listClassName="justify-content-end mb-0"
+                  >
+                    <PaginationItem className="disabled">
+                      <PaginationLink
+                        href="#pablo"
+                        onClick={(e) => e.preventDefault()}
+                        tabIndex="-1"
+                      >
+                        <i className="fas fa-angle-left" />
+                        <span className="sr-only">Previous</span>
+                      </PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem className="active">
+                      <PaginationLink
+                        href="#pablo"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        1
+                      </PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink
+                        href="#pablo"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        2 <span className="sr-only">(current)</span>
+                      </PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink
+                        href="#pablo"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        3
+                      </PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink
+                        href="#pablo"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        <i className="fas fa-angle-right" />
+                        <span className="sr-only">Next</span>
+                      </PaginationLink>
+                    </PaginationItem>
+                  </Pagination>
+                </nav>
+              </CardFooter>
+            </Card>
+          </div>
+        </Row>
+        {/* Dark table */}
+        
+      </Container>
+    </>
+  );
+};
+
+export default Tour;

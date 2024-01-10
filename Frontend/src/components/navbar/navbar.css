@@ -66,3 +66,13 @@
     color: #232323 !important;
     font-weight: 500;
 }
+
+.btn-link{
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.btn-link:hover{
+    color: #FFFFFF !important;
+}

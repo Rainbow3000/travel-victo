@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import './destinations.css';
 import { useSelector } from 'react-redux';
+import {Link} from 'react-router-dom'
 const Destinations = () => {
     const {categorys} = useSelector(state => state.category);
-    const [categorySlice,setCategorySlice] = useState([]); 
+  
+    const [tour,setTour] = useState([]); 
+
     useEffect(()=>{
-        setCategorySlice(categorys.slice(0,2)); 
+      
     },[categorys.length])
     return (
         <div className="container-desti">
@@ -16,67 +19,50 @@ const Destinations = () => {
                     <span>Discover outstanding Southeast Asian tours with us !</span>
                 </div>
                 <div className="destination-tour">
-                    <div className="destination-col-5">
-                        <a href="/single/1">
-                        <div className="destination-img">
-                            <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703065366/destination17_ju0iug.jpg" alt="" />
-                        </div>
-                        <div className="destination-name">
-                            <div className='name-tour'>Ha Long</div>
-                            <div className="tour-desti">6 Tours</div>
-                        </div>
-                        <div className="color-overlay"></div>
-                        </a>
-                    </div>
+                    {
+                        categorys.length > 0  && (
+                                <div className="destination-col-5">
+                                  
+                                        <Link to={`/travel-list/${categorys[0]?._id}`}>
+                                            <div className="destination-img">
+                                                <img src={ categorys[0]?.image} alt="" />
+                                            </div>
+                                            <div className="destination-name">
+                                                <div className='name-tour'>{ categorys[0]?.name}</div>
+                                                <div className="tour-desti">{ categorys[0]?.tourNumber} Tour</div>
+                                            </div>
+                                            <div className="color-overlay"></div>
+                                        </Link>
+                                    
+                                </div>
+                        )
+                    }
                     <div className="destination-col-7">
-                        <div className="child-col-7">
-                            <a href="/single/1">
-                            <div className="destination-img">
-                                <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703065362/thail_c8yrwp.png" alt="" />
-                            </div>
-                            <div className="destination-name">
-                                <div className='name-tour'>Ha Long</div>
-                                <div className="tour-desti">6 Tours</div>
-                            </div>
-                            <div className="color-overlay"></div>
-                            </a>
-                        </div>
-                        <div className="child-col-7">
-                            <a href="/single/1">
-                            <div className="destination-img">
-                                <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703065358/cam_bxoswq.png" alt="" />
-                            </div>
-                            <div className="destination-name">
-                                <div className='name-tour'>Ha Long</div>
-                                <div className="tour-desti">6 Tours</div>
-                            </div>
-                            <div className="color-overlay"></div>
-                            </a>
-                        </div>
-                        <div className="child-col-7">
-                            <a href="/single/1">
-                            <div className="destination-img">
-                                <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703065355/mi2_kyidf0.png" alt="" />
-                            </div>
-                            <div className="destination-name">
-                                <div className='name-tour'>Ha Long</div>
-                                <div className="tour-desti">6 Tours</div>
-                            </div>
-                            <div className="color-overlay"></div>
-                            </a>
-                        </div>
-                        <div className="child-col-7">
-                            <a href="/single/1">
-                            <div className="destination-img">
-                                <img src="https://res.cloudinary.com/dgyolr1sq/image/upload/v1703065354/ks2_nanhen.png" alt="" />
-                            </div>
-                            <div className="destination-name">
-                                <div className='name-tour'>Ha Long</div>
-                                <div className="tour-desti">6 Tours</div>
-                            </div>
-                            <div className="color-overlay"></div>
-                            </a>
-                        </div>
+
+                        {
+                            categorys.length > 0 && categorys.slice(1,categorys.length).map(item =>{
+                                return (
+                                    <Link to={`/travel-list/${item._id}`}>
+                                        <div className="child-col-7">
+                                     
+                                        <div className="destination-img">
+                                            <img src={item.image} alt="" />
+                                        </div>
+                                        <div className="destination-name">
+                                            <div className='name-tour'>{item.name}</div>
+                                            <div className="tour-desti">{item.tourNumber} Tours</div>
+                                        </div>
+                                        <div className="color-overlay"></div>
+                                     
+                                        </div>
+                                    </Link>
+                                )
+                            })
+                        }
+
+                     
+
+                        
                     </div>
                 </div>
             </div>

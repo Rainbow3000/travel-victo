@@ -12,8 +12,8 @@ export const fetchProductsByCategory = createAsyncThunk('products/fetchProductsB
 })
 
 
-export const fetchSingleProduct = createAsyncThunk('products/fetchSingleProducts', async (productId)=>{
-    const response = await publicRequest.get(`/product/${productId}`)
+export const fetchSingleProduct = createAsyncThunk('products/fetchSingleProducts', async (tourId)=>{
+    const response = await publicRequest.get(`/product/${tourId}`)
     return response.data;
 })
 
@@ -21,7 +21,8 @@ export const fetchSingleProduct = createAsyncThunk('products/fetchSingleProducts
 const productSlice = createSlice({
     name:'products',
     initialState:{
-     products:[]
+     products:[],
+     singleTour:null
     },
     reducers:{
        
@@ -30,6 +31,9 @@ const productSlice = createSlice({
         builder.addCase(fetchProducts.fulfilled,(state,action)=>{
            state.products = action.payload.data;
         })
+        builder.addCase(fetchSingleProduct.fulfilled,(state,action)=>{
+            state.singleTour = action.payload.data;
+         })
      
     }
 })

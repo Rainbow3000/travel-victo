@@ -1,60 +1,84 @@
-import React from 'react'
+
+import { useState,useEffect } from 'react';
 import './register.scss'
-import { Link } from 'react-router-dom'; 
-import {useDispatch} from 'react-redux'
-import {useNavigate} from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom';
+import {register} from '../../store/slice/userSlice'
+import { useDispatch, useSelector } from 'react-redux';
+import { resetSuccess } from '../../store/slice/userSlice';
+const Login = () => {
 
-import { useForm } from 'react-hook-form';
-const Register = () => {
-    let navigate = useNavigate(); 
+    const [userName,setUserName] = useState("")
+    const [email,setEmail] = useState("")
+    const [password,setPassword] = useState("")
+    const [userNameErr,setUserNameErr] = useState(""); 
+    const [emailErr,setEmailErr]  = useState("")
+    const [passwordErr,setPasswordErr]  = useState("")
+
+    const {success,user,error} = useSelector(state => state.user)
     const dispatch = useDispatch(); 
-    const {register,handleSubmit,formState:{errors}} = useForm(); 
-    const onSubmit = (data,e)=>{
+    const handleSubmit = (e)=>{
         e.preventDefault(); 
-        const {userName,email,password,rePassword}  = data; 
-        if(password === rePassword){
-            alert("Đăng ký tài khoản thành công !"); 
-            navigate('/login');
+
+        let flag = 0 ;
+        if(userName.trim().length === 0){
+            setUserNameErr('User name is required !')
+            flag = 1;
         }
+
+        if(email.trim().length === 0){
+            setEmailErr('Email is required !')
+            flag = 1;
+        }
+        if(password.trim().length === 0){
+            setPasswordErr('Password is required !')
+            flag = 1;
+        }
+
+        if(flag === 1){
+            return; 
+        }
+
+        dispatch(register({userName,email,password}))
     }
+    const navigate = useNavigate(); 
+    if(success === true){
+        alert('Register success !');
+        dispatch( resetSuccess()); 
+        navigate('/login');  
+    }
+
+    
+  useEffect(()=>{
+    if(user !== null){
+      navigate('/')
+    }
+  },[])
+  
   return (
+    <form className="form-login" onSubmit={handleSubmit}>
+        <span style={{color:'red'}}>{error}</span>
+         <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Your Name</label><br/>
+        <span style={{color:'red'}}>{userNameErr}</span>
+        <input value={userName} type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onChange={(e)=>setUserName(e.target.value)}/>
+        
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Email</label><br/>
+        <span style={{color:'red'}}>{emailErr}</span>
+        <input value={email} type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onChange={(e)=>setEmail(e.target.value)}/>
+        
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Password</label><br/>
+        <span style={{color:'red'}}>{passwordErr}</span>
+        <input value={password} type="password" class="form-control" id="exampleInputPassword1" onChange={(e)=>setPassword(e.target.value)}/>
+      </div>
+      <span>Are you ready have an account ? <Link style={{textDecoration:'underline',color:'blue'}} to="/login">Login</Link></span>
+     
+      <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+  );
+};
 
-    <div className='register-container'>
-        <div className="register-wraper">
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <h1>ĐĂNG KÝ TÀI KHOẢN</h1>
-                <div>
-                    <label htmlFor="">Tên người dùng<span>*</span></label>
-                      <span className='register-error'>{errors.userName?.type === "required" && "Tên không được trống!"}</span>
-                      <span className='register-error'>{errors.userName?.type === "minLength" && "Tên phải it nhất 8 ký tự"}</span>
-                    <input name='userName' type="text" placeholder='Tên người dùng' {...register("userName",{required:true,minLength:8})}/>
-                </div>
-                <div>
-                      <label htmlFor="">Email<span>*</span></label>
-                      <span className='register-error'>{errors.email?.type === "required" && "email không được trống!"}</span>
-                      <span className='register-error'>{errors.email?.type === "pattern" && "email không hợp lệ!"}</span>
-                      <input name='email' type="email" placeholder='Email' {...register("email", { required: true,pattern: /^[A-Z0-9 ._%+-]+@[A-Z0-9 .-]+\.[A-Z]{2,}$/i })}/>
-                </div>
-                <div>
-                      <label htmlFor="">Mật khẩu<span>*</span></label>
-                      <span className='register-error'>{errors.password?.type === "required" && "Mật khẩu không được trống"}</span>
-                      <span className='register-error'>{errors.password?.type === "minLength" && " Mật khẩu phải ít nhất 8 kí tự!"}</span>
-                      <input name='password' type="password" placeholder='Mật khẩu' {...register("password",{required:true,minLength:8})}/>
-                </div>
-                <div>
-                      <label htmlFor="">Nhập lại mật khẩu<span>*</span></label>
-                      <span className='register-error'>{errors.rePassword?.type === "required" && "Mật khẩu không được trống"}</span>
-                      <span className='register-error'>{errors.rePassword?.type === "minLength" && "Mật khẩu phải ít nhất 8 kí tự!"}</span>
-                      <input name='rePassword' type="password" placeholder='Nhập lại mật khẩu' {...register("rePassword",{required:true,minLength:8})}/>
-                </div>
-                <div>
-                    <Link to="/login">Bạn đã có tài khoản ?</Link>
-                    <button>ĐĂNG KÝ</button>
-                </div>
-            </form>
-        </div>
-    </div>
-  )
-}
-
-export default Register
+export default Login;
