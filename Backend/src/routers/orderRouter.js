@@ -6,8 +6,8 @@ router.post('/api/order',orderController.createOrder);
 router.post('/api/order/exportToExcel',orderController.exportToExcel); 
 router.get('/api/order',orderController.getAllOrder); 
 router.get('/api/order/charts',orderController.orderCharts)
-router.put('/api/order/:orderId',orderController.updateOrder);
+router.put('/api/order/:id',orderController.updateOrder);
 router.delete('/api/order/:id',orderController.deleteOrder)
-router.get('/api/order/byuser/:userId',orderController.getOrderByUserId);
+router.get('/api/order/byuser/:id',orderController.getOrderByUserId);
 
 module.exports = router; 

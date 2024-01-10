@@ -26,6 +26,7 @@ import {request} from '../http.js'
 import uuid from 'react-uuid';
 import storage from '../storage'; 
 import {ref as refStorage,uploadBytes, deleteObject , getDownloadURL} from 'firebase/storage'
+import {useNavigate} from 'react-router-dom'
 const Tour = () => {
   const [categoryList,setCategoryList] = useState([]); 
   const [showOverlay,setShowOverlay] = useState(false); 
@@ -141,8 +142,14 @@ const handleUpdate = (item)=>{
   setId(item._id); 
 }
 
+const navigate = useNavigate(); 
 
   useEffect(()=>{
+    if(JSON.parse(localStorage.getItem('user')) === null){
+      navigate('/auth/login');
+      return; 
+  }
+
     getTour(); 
     getCategory()
   },[])

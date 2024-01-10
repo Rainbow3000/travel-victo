@@ -2,6 +2,21 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const CryptoJS = require("crypto-js");
+const {senMailResetPass} = require('../utils/email')
+function generatePass() {
+    let pass = '';
+    let str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+        'abcdefghijklmnopqrstuvwxyz0123456789@#$';
+ 
+    for (let i = 1; i <= 8; i++) {
+        let char = Math.floor(Math.random()
+            * str.length + 1);
+ 
+        pass += str.charAt(char)
+    }
+ 
+    return pass;
+}
 module.exports = {
     login:async(req,res,next)=>{
         try {
@@ -57,7 +72,7 @@ module.exports = {
                     data:'Email already exists.'
                 })
             }
-            
+
             const hashPassword = CryptoJS.AES.encrypt(
                 userInfo.password,
                 process.env.AES_SECRET
@@ -75,6 +90,44 @@ module.exports = {
             console.log(error)
             res.status(500).json(error); 
         }
+    },
+
+    resetPassword:async(req,res,next)=>{
+        try {              
+            const check = await User.findOne({ email: req.body.email });
+            if(!check){
+                res.status(400).json({
+                    success:'false',
+                    data:'Email not exist.'
+                })
+            }
+
+            const newPass = generatePass(); 
+
+            const hashPassword = CryptoJS.AES.encrypt(
+                newPass,
+                process.env.AES_SECRET
+            ).toString();
+       
+            
+            check.password = hashPassword; 
+            const data = await User.findByIdAndUpdate({_id:check._id},check,{
+                new:true
+            })
+
+            senMailResetPass(req.body.email,newPass)
+           
+            res.status(200).json({
+                success:true,
+                data:data
+            })
+        
+        } catch (error) {
+            console.log(error)
+            res.status(500).json(error); 
+        }
     }
+
+    
 }
 

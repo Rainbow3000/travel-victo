@@ -18,6 +18,7 @@ import {
   Row,
   UncontrolledTooltip,
 } from "reactstrap";
+import {useNavigate} from 'react-router-dom'
 // core components
 import Header from "../components/Headers/Header.js";
 import { useEffect, useState } from "react";
@@ -34,7 +35,48 @@ const Order = () => {
     }
   }
 
+  const handleExportExcel = async()=>{
+    try {
+      await request.post('/order/exportToExcel',order); 
+      alert('Export to excel success !'); 
+    } catch (error) {
+      
+    }
+  }
+
+  const handleDelete = async(id)=>{
+    try {
+      await request.put(`order/${id}`,{
+        status:-1
+      })
+      getOrder(); 
+    } catch (error) {
+      
+    }
+  }
+
+  const handleDone = async(id)=>{
+    try {
+      await request.put(`order/${id}`,{
+        status:1
+      })
+      getOrder(); 
+    } catch (error) {
+      
+    }
+  }
+
+  const navigate = useNavigate(); 
+
+
+
+
   useEffect(()=>{
+    if(JSON.parse(localStorage.getItem('user')) === null){
+      navigate('/auth/login');
+      return; 
+  }
+
     getOrder(); 
   },[])
 
@@ -50,7 +92,7 @@ const Order = () => {
             <Card className="shadow">
             <CardHeader className="border-0 d-flex" style={{justifyContent:'space-between', width:'100%'}}>
                 <h3 className="mb-0">Order</h3>
-                
+                <button className="btn btn-primary" onClick={()=> handleExportExcel()}>Export</button>
               </CardHeader>
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
@@ -61,6 +103,7 @@ const Order = () => {
                     <th scope="col">Total Monney</th>
                     <th scope="col">Total Monney</th>
                     <th scope="col">Pay Type</th>
+                    <th scope="col">Note</th>
                     <th scope="col">Status</th>
                     <th scope="col">Action</th>                 
                   </tr>
@@ -71,37 +114,49 @@ const Order = () => {
                       return (
                           <tr>
                             <th scope="row">
-                              <Media className="align-items-center">
-                                <a
-                                  className="avatar rounded-circle mr-3"
-                                  href="#pablo"
-                                  onClick={(e) => e.preventDefault()}
-                                >
-                                  <img
-                                    alt="..."
-                                    src={require("../assets/img/theme/angular.jpg")}
-                                  />
-                                </a>
-                                <Media>
-                                  <span className="mb-0 text-sm">
-                                    Angular Now UI Kit PRO
-                                  </span>
-                                </Media>
-                              </Media>
+                             <span>Email:{item.customer?.email}</span><br/>
+                             <span>Name:{item.customer?.name}</span><br/>
+                             <span>Phone number:{item.customer?.phoneNumber}</span><br/>
                             </th>
-                            <td>$1,800 USD</td>
-                            <td>$1,800 USD</td>
-                            <td>$1,800 USD</td>
-                            <td>$1,800 USD</td>
-                            <td>$1,800 USD</td>
-                            <td>$1,800 USD</td>
+                            <td>
+                              <span>Tour Name:{item.product?.name}</span><br/>
+                              <span>From date:{item.schedule?.dateStart}</span><br/>
+                              <span>To Date:{item.schedule?.dateEnd}</span><br/>
+                            </td>
+                            <td>{item.schedule.createdAt.split('T')[0]}</td>
+                            <td>{item.schedule.dateEnd}</td>
+                            <td>$ {item.totalMonney}</td>
+                            <td>{item.payType}</td>
+                            <td>{item.note}</td>
+                            {
+                                item.status === 0 && (
+                                <td>
+                                    <span style={{color:'blue'}}>Pending</span>
+                                </td>
+                                )
+                            }
+                              {
+                              item.status === 1 && (
+                                <td>
+                                  <span style={{color:'green'}}>OK</span>
+                                </td>
+                              )
+                            }
+
+{
+                              item.status === -1 && (
+                                <td>
+                                  <span style={{color:'red'}}>Cancel</span>
+                                </td>
+                              )
+                            }
+                           
                             <td style={{display:'flex',justifyContent:'flex-end'}}>
                                   <div className="d-flex align-items-center">
-                                    <button className="btn btn-success">Done</button>
-                                    <button className="btn btn-danger">Remove</button>
+                                    <button onClick={()=>handleDone(item._id)} className="btn btn-success">Done</button>
+                                    <button onClick={()=>handleDelete(item._id)} className="btn btn-danger">Cancel</button>
                                   </div>
-                                </td>
-                            
+                                </td>                           
                           </tr>
                       )
                     }) 

@@ -15,30 +15,10 @@ const senMailOrder = (mail, product, total) => {
   const option = {
     from: "nguyenducthinh0401@outlook.com",
     to: mail.toString(),
-    subject: "YOUR ORDER",
+    subject: "THANKS YOUR BOOKING",
     html: `
-            <h1 style="text-align:center">YOUR ORDER</h1>
-            <table style="border:1px solid green;width:600px;height:auto;margin:0 auto;text-align:center">
-                     <tr  style="border:1px solid green">
-                            <th  style="border:1px solid green">Image</th>
-                            <th  style="border:1px solid green">Name</th>   
-                            <th  style="border:1px solid green">Color</th>   		
-                            <th  style="border:1px solid green">Size</th>   		
-                            <th  style="border:1px solid green">Price</th>
-                    </tr>
-                    ${product.map((item) => {
-                      return `
-                         <tr  style="border:1px solid green">
-                            <td  style="border:1px solid green"><img style="width:60px" src="${item.image}"/></td>  			
-                            <td  style="border:1px solid green">${item.productName}</td>
-                            <td  style="border:1px solid green">${item.color}</td/>
-                            <td  style="border:1px solid green">${item.size}</td/>
-                            <td  style="border:1px solid green">${item.total}</td>
-                        </tr>
-                        `;
-                    })}
-              </table>
-                    <h4 style="text-align:center">Total:${total}$</h4>
+            <h1 style="text-align:center">We have received your booking and will contact you lastest. Thanks you !</h1>
+           
               `,
   };
   transporter.sendMail(option, (err, info) => {

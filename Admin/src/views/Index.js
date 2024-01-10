@@ -5,6 +5,7 @@ import { useState,useEffect } from "react";
 import classnames from "classnames";
 import Chart from "chart.js";
 import {request} from '../http'
+import {useNavigate} from 'react-router-dom'
 import {
   Button,
   Card,
@@ -86,6 +87,7 @@ const Index = (props) => {
     },
   ]
 )
+const navigate = useNavigate(); 
   const getCharts = async()=>{
     try {
       const response = await request.get('order/charts'); 
@@ -113,6 +115,14 @@ const Index = (props) => {
   },[]); 
 
   useEffect(()=>{
+
+
+    if(JSON.parse(localStorage.getItem('user')) === null){
+        navigate('/auth/login');
+        return; 
+    }
+
+
     const chartFilter = charts?.data.order.filter(item => item._id.year === new Date().getFullYear());
     const newValue = chartData?.map(item => {
         const check = chartFilter?.find(c => c._id.month === item.id)
@@ -215,7 +225,7 @@ const Index = (props) => {
                           <td>{item.name}</td>
                           <td>{item.phoneNumber}</td>
                           <td>
-                            <i className="fas fa-arrow-up text-success mr-3" /> {item.address}
+                            {item.address}
                           </td>
                           <td>
                               <div className="d-flex align-items-center">

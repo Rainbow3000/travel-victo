@@ -71,13 +71,14 @@ const Payment = () => {
 
       
         if(check === 1) return; 
-
+	
         const customer = {
             name,
             email,
             address,
 			phoneNumber,
-            note
+            note,
+			userId:user._id
         }
 
         const order = {

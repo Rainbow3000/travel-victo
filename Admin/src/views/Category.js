@@ -27,6 +27,7 @@ import Header from "../components/Headers/Header.js";
 import {request} from '../http.js'
 import './views.scss'
 import { useEffect, useState } from "react";
+import {useNavigate} from 'react-router-dom'
 const Category = () => {
   const [category,setCategory] = useState([]); 
   const [showOverlay,setShowOverlay] = useState(false); 
@@ -36,7 +37,7 @@ const Category = () => {
   const [typeForm,setTypeForm] = useState(1); 
   const [id,setId] = useState(""); 
   const [image,setImage] = useState(""); 
-
+  const navigate = useNavigate(); 
   const getCategory = async()=>{
     try {
       const response = await request.get('category'); 
@@ -106,6 +107,11 @@ const handleDelete = async(id)=>{
 }
 
   useEffect(()=>{
+    if(JSON.parse(localStorage.getItem('user')) === null){
+      navigate('/auth/login');
+      return; 
+  }
+
     getCategory(); 
   },[])
 

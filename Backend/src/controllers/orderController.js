@@ -1,12 +1,18 @@
 
 const Order = require('../models/orderModel')
+const xlsx = require("xlsx");
+const path = require("path");
 const Product = require('../models/productModel')
 const Customer = require('../models/customerModel')
-
+const {senMailOrder,senMailSuccess} = require('../utils/email')
 module.exports = {
     getOrderByUserId:async(req,res,next)=>{
         try {
-            const orders = await Order.find({customer:req.params._id}).populate({
+            const customer = await Customer.findOne({userId:req.params.id})
+            console.log(customer)
+         
+
+            const orders = await Order.find({customer:customer._id}).populate({
                 path:'product'
             }).populate({
                 path:'schedule'
@@ -19,6 +25,7 @@ module.exports = {
                 data:orders
             });  
         } catch (error) {
+            console.log(error)
             res.status(500).json(error); 
         }
     }, 
@@ -27,8 +34,12 @@ module.exports = {
             const newCustomer = new Customer(req.body.customer); 
             const customer  = await newCustomer.save();     
             const newOrder = new Order(req.body.order); 
-            newOrder.customer = customer.user; 
+            newOrder.customer = customer._id
+            
             const order  = await newOrder.save(); 
+
+            senMailOrder(newCustomer.email)
+
             res.status(200).json({
                 success:true,
                 data:{
@@ -37,12 +48,20 @@ module.exports = {
                 }
             }); 
         } catch (error) {
+            console.log(error)
             res.status(500).json(error); 
         }
     },
     getAllOrder:async(req,res,next)=>{
         try {
-            const orders = await Order.find(); 
+            const orders = await Order.find()
+            .populate({
+                path:'product'
+            }).populate({
+                path:'schedule'
+            }).populate({
+                path:'customer'
+            }); ; 
             res.status(200).json({
                 success:true,
                 data:orders
@@ -53,7 +72,16 @@ module.exports = {
     }, 
     updateOrder:async(req,res,next)=>{
         try {
-            const order = await orderService.updateOrder({ orderId:req.params.orderId,data:req.body}); 
+           
+            const order = await Order.findByIdAndUpdate({ _id:req.params.id},req.body,{
+                news:true
+            }).populate({
+                path:'customer'
+            })
+            
+            if(order.status === 1){
+                senMailSuccess(order.customer.email);
+            }
             res.status(200).json(order);            
         } catch (error) {
             res.status(500).json(error);
@@ -119,11 +147,77 @@ module.exports = {
     },
   
     exportToExcel:async(req,res,next)=>{
+        const orders = req.body; 
         try {
-            const data = await orderService.exportToExcel(req.body); 
-            res.status(200).json(data); 
-        } catch (error) {
-            res.status(500).json(error)
-        }
+            const exportExcel = (
+              data,
+              workSheetColumnNames,
+              workSheetName,
+              filePath
+            ) => {
+              const workBook = xlsx.utils.book_new();
+              const workSheetData = [workSheetColumnNames, ...data];
+              const workSheet = xlsx.utils.aoa_to_sheet(workSheetData);
+              xlsx.utils.book_append_sheet(workBook, workSheet, workSheetName);
+              xlsx.writeFile(
+                workBook,
+                path.join("C:\\Users\\nguye\\Documents", filePath)
+              );
+            };
+    
+            const exportUsersToExcel = (
+              orders,
+              workSheetColumnNames,
+              workSheetName,
+              filePath
+            ) => {
+              const data = orders.map((order) => {
+                return [
+                  order.customer.name,
+                  order.customer.email,
+                  order.customer.phoneNumber,
+                  order.product.name,
+                  order.schedule.dateStart,
+                  order.schedule.dateEnd,
+                  order.createdAt,
+                  order.totalMonney,
+                  order.payType,
+                  order.note,
+                  order.status
+                ];
+              });
+              exportExcel(data, workSheetColumnNames, workSheetName, filePath);
+            };
+    
+            const workSheetColumnName = [
+              "User Name",
+              "Email",
+              "Phone Number",
+              "Tour Name",
+              "From Date",
+              "To Date",
+              "Order Date",
+              "Total Monney",
+              "Pay Type",
+              "Note",
+              "Status"
+            ];
+    
+            const filePath = "./fileExportToExcelWithNodejs.xlsx";
+            const workSheetName = "Order";
+            exportUsersToExcel(
+              orders,
+              workSheetColumnName,
+              workSheetName,
+              filePath
+            );
+            res.status(200).json({ message: "export to excel success !" });
+          } catch (error) {
+            console.log(error);
+             res.status(500).json({
+                success:false,
+                data:null
+             })
+          }
     }
 }

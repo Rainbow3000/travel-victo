@@ -1,7 +1,7 @@
 const mongoose = require('mongoose'); 
 
 const customerSchema = new mongoose.Schema({ 
-    user: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref:'User'
     },
@@ -15,4 +15,4 @@ const customerSchema = new mongoose.Schema({
 
 
 
-module.exports = mongoose.model('customer',customerSchema); 
+module.exports = mongoose.model('Customer',customerSchema); 
