@@ -56,7 +56,7 @@ const Hotels = () => {
                                     <div className="feature-item1">
                                         <div className="item-header1">
                                             
-                                                <img height={250} width="100%" src={item.image} alt="" />
+                                                <img height={350} width="100%" src={item.image} alt="" />
                                             
                                         </div>
                                         <div className="item-main1">

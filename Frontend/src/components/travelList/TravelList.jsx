@@ -22,7 +22,7 @@ const TravelList = () => {
                     <h2>Top Tour Packages</h2>
                     <span>Discover outstanding Southeast Asian tours with us !</span>
                 </div>
-                <div className="travel-list" style={{display:'flex',justifyContent:'center'}}>
+                <div className="travel-list" >
 
                     {
                         products?.length > 0 && id === undefined && products.map(item =>{

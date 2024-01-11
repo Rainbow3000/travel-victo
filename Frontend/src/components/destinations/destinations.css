@@ -10,6 +10,7 @@
     width: 100%;
     display: flex;
     position: relative;
+    height: 650px;
 }
 .destination-col-5{
     position: relative;
@@ -49,6 +50,7 @@
 }
 .child-col-7{
     position: relative;
+    height: 310px;
 }
 .name-tour{
     color: #fdc703;
