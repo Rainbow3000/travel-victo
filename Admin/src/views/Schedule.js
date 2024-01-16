@@ -44,6 +44,13 @@ import {
     const [product,setProduct] = useState(""); 
     const [schedule,setSchedule] = useState([]); 
     const [hotline,setHotline] = useState(""); 
+
+    const [fromDateErr,setFromDateErr] = useState("")
+    const [toDateErr,setToDateErr] = useState("")
+    const [hotlineErr,sethotLineErr] = useState("")
+    const [tourErr,setTourErr] = useState("")
+
+    
     const getTour = async()=>{
       try {
         const response = await request.get('product'); 
@@ -74,6 +81,33 @@ import {
   const handleSubmit = async(e)=>{
     e.preventDefault(); 
   
+
+    let isErr = false ; 
+
+
+    if(dateStart.trim() === ""){
+      setFromDateErr("From date is required")
+    }
+
+    if(dateEnd.trim() === ""){
+      setToDateErr("To date is required")
+    }
+
+
+    if(hotline.trim() === ""){
+      sethotLineErr("Hotline is required")
+    }
+
+
+    if(product.trim() === ""){
+      setTourErr("Tour is required")
+    }
+
+
+
+    if(isErr) return; 
+
+
     if(typeForm === 1){
       try {
         await request.post('schedule',{
@@ -102,6 +136,13 @@ import {
         
       }
     }
+
+    setProduct("");
+    setTransportType("");
+    setDateStart(""); 
+    setDateEnd("");
+    setPrice("");
+    setId("") 
   
   }
   const handleUpdate = (item)=>{
@@ -117,8 +158,11 @@ import {
   
   const handleDelete = async(id)=>{
     try {
+      let text = "Are you sure deleted this schedule ?";
+      if (window.confirm(text) === true) {    
         await request.delete(`schedule/${id}`,)
         getSchedule(); 
+      }
     } catch (error) {
         
     }
@@ -145,20 +189,32 @@ import {
   
   
                 <div class="form-group">
-                  <label for="exampleInputEmail1">From Date</label>
-                  <input value={dateStart} type="date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter date start" onChange={(e)=> setDateStart(e.target.value)}/>
+                  <label for="exampleInputEmail1">From Date</label><br/>
+                  <span style={{color:'red'}}>{fromDateErr}</span>
+                  <input value={dateStart} type="date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter date start" onChange={(e)=> {
+                    setDateStart(e.target.value)
+                    setFromDateErr("")
+                  }}/>
               
                 </div>
   
                 <div class="form-group">
-                  <label for="exampleInputEmail1">To Date</label>
-                  <input value={dateEnd} type="date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter date end" onChange={(e)=> setDateEnd(e.target.value)}/>
+                  <label for="exampleInputEmail1">To Date</label><br/>
+                  <span style={{color:'red'}}>{toDateErr}</span>
+                  <input value={dateEnd} type="date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter date end" onChange={(e)=>{
+                     setDateEnd(e.target.value)
+                     setToDateErr("")
+                  }}/>
               
                 </div>
   
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Hotline</label>
-                  <input value={hotline} type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter hotline" onChange={(e)=> setHotline(e.target.value)}/>
+                  <label for="exampleInputEmail1">Hotline</label><br/>
+                  <span style={{color:'red'}}>{hotlineErr}</span>
+                  <input value={hotline} type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter hotline" onChange={(e)=> {
+                    setHotline(e.target.value)
+                    sethotLineErr(""); 
+                  }}/>
               
                 </div>
                
@@ -166,8 +222,12 @@ import {
  
   
                 <div class="form-group" style={{display:'flex',flexDirection:'column'}}>
-                  <label for="exampleInputEmail1">Choose Tour</label>
-                  <select value={product} onChange={(e)=> setProduct(e.target.value)}  class="form-select" aria-label="Default select example" style={{height:40,border:'1px solid #cad1d7',borderRadius:5}}>
+                  <label for="exampleInputEmail1">Choose Tour</label><br/>
+                  <span style={{color:'red'}}>{tourErr}</span>
+                  <select value={product} onChange={(e)=> {
+                    setProduct(e.target.value)
+                    setTourErr("")
+                  }}  class="form-select" aria-label="Default select example" style={{height:40,border:'1px solid #cad1d7',borderRadius:5}}>
                     <option defaultChecked disabled value="">Choose a tour</option>
                     {
                       tour.length > 0 && tour.map(item =>{

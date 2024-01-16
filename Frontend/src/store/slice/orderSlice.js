@@ -11,6 +11,13 @@ export const createOrder = createAsyncThunk('order/createOrder',async(data)=>{
     const response = await publicRequest.post(`/order`,data); 
     return response.data; 
 })
+
+export const createOrderPaypal = createAsyncThunk('order/createOrderPaypal',async(data)=>{
+    const response = await publicRequest.post(`/order/paypal`,data); 
+    return response.data; 
+})
+
+
 const orderSlice = createSlice({
     name:'order',
     initialState:{

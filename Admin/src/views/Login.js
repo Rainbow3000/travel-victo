@@ -36,11 +36,9 @@ const Login = () => {
   const handleResetPass = async()=>{
       try {
         if(emailRecover.trim() === ""){
-
           setErr("Email is required !")
           return; 
         }
-
         await request.post('/auth/resetPass',{email:emailRecover});
         alert('Your password has been send to your mail.Please check your mail to get new password !')
         setForgetPass(false); 
@@ -85,8 +83,7 @@ const Login = () => {
         setErr("Account is not allowed")
       }
     } catch (error) {  
-      console.log(error)
-      // setErr(error.response.data)
+      setErr(error.response.data.data)
     }
   }
 
@@ -139,7 +136,13 @@ const Login = () => {
                           placeholder="Email"
                           type="email"
                           autoComplete="new-email"
-                          onChange={(e)=> setEmail(e.target.value)}
+                          onChange={(e)=> {
+                            setEmail(e.target.value)
+                            setErr("")
+                            setEmailErr("")
+                            setPasswordErr("")
+                          }
+                          }
                           
                         />
                       </InputGroup>
@@ -154,7 +157,11 @@ const Login = () => {
                         </InputGroupAddon>
                         <Input
                           value= {password}
-                          onChange={(e)=> setPassword(e.target.value)}
+                          onChange={(e)=> {
+                            setPassword(e.target.value)
+                            setErr("")
+                            setEmailErr("")
+                            setPasswordErr("")}}
                           placeholder="Password"
                           type="password"
                           autoComplete="new-password"
@@ -173,7 +180,11 @@ const Login = () => {
                     </InputGroupAddon>
                     <Input
                       value= {emailRecover}
-                      onChange={(e)=> setEmailRecover(e.target.value)}
+                      onChange={(e)=> {
+                        setErr("")
+                        setEmailErr("")
+                        setPasswordErr("")
+                        setEmailRecover(e.target.value)}}
                       placeholder="Enter email to reset password"
                       type="email"
                       autoComplete="new-password"

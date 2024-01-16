@@ -100,8 +100,9 @@ module.exports = {
                     success:'false',
                     data:'Email not exist.'
                 })
+                return; 
             }
-
+        
             const newPass = generatePass(); 
 
             const hashPassword = CryptoJS.AES.encrypt(

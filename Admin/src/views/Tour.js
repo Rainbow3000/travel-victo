@@ -44,6 +44,18 @@ const Tour = () => {
   const [address,setAddress] = useState(""); 
   const  [price,setPrice] = useState(0); 
   const [isSale,setIsSale] = useState(0); 
+
+  const [nameErr,setNameErr] = useState("");
+  const [imageErr,setImageErr] = useState("");
+  const [categoryErr,setCategoryErr] = useState("");
+  const [descErr,setDescErr] = useState("");
+  const [personNumberErr,setPersonNumberErr] = useState("");
+  const [timeErr,setTimeErr] = useState("");
+  const [addressErr,setAddressErr] = useState("");
+  const [priceErr,setPriceErr] = useState("");
+  const [isSaleErr,setIsSaleErr] = useState("");
+
+
   const getTour = async()=>{
     try {
       const response = await request.get('product'); 
@@ -63,6 +75,7 @@ const Tour = () => {
   }
 
   const handleChooseImage = (event)=>{
+    setImageErr("")
     const file = event.target.files[0]; 
           const fileName =  `images/${uuid()}-${file?.name}`; 
           const storageRef = refStorage(storage,fileName); 
@@ -76,6 +89,69 @@ const Tour = () => {
 
 const handleSubmit = async(e)=>{
   e.preventDefault(); 
+  let isErr=  false; 
+  if(name.trim() === ""){
+    setNameErr("Tour name is required"); 
+    isErr = true; 
+  }
+
+  if(desc.trim() === ""){
+    setDescErr("Description is required")
+    isErr = true
+
+  }
+
+  if(isSale.toString().trim() === ""){
+    setIsSale("Sale is required")
+    isErr = true
+
+  }
+
+  if(isSale.toString().trim() === ""){
+    setIsSale("Description is required")
+    isErr = true
+
+  }
+
+  if(price.toString().trim() === ""){
+    setPriceErr("Price is required")
+    isErr = true
+
+  }
+
+
+
+
+  
+  if(address.trim() === ""){
+    setAddressErr("Address is required")
+    isErr = true
+
+  }
+  
+  if(personNumber.trim() === ""){
+    setPersonNumberErr("Person number is required")
+    isErr = true
+
+  }
+  
+  if(time.trim() === ""){
+    setTimeErr("Date number is required")
+    isErr = true
+  }
+
+  if(category.trim() === ""){
+    setCategoryErr("Category is required")
+    isErr = true
+
+  }
+  if(image.trim() === ""){
+    setImageErr("Image is required")
+    isErr = true
+  }
+
+  if(isErr) return; 
+
 
   if(typeForm === 1){
     try {
@@ -115,13 +191,28 @@ const handleSubmit = async(e)=>{
     }
   }
 
+  setName("");
+  setAddress("");
+  setPersonNumber("");
+  setTime(""); 
+  setImage("");
+  setCategory("");
+  setPrice("")
+  setShowOverlay(false); 
+  setDesc("")
+  setTypeForm(""); 
+  setId(""); 
 }
 
 
 const handleRemove = async(id)=>{
   try {
-    await request.delete(`product/${id}`)
-    getTour(); 
+    let text = "Are you sure deleted this tour ?";
+    if (window.confirm(text) === true) {    
+      await request.delete(`product/${id}`)
+      getTour(); 
+    }
+ 
   } catch (error) {
     
   }
@@ -166,50 +257,86 @@ const navigate = useNavigate();
                 <i class="fa-solid fa-xmark" onClick={()=>setShowOverlay(false)}></i>
               </div>
               <div class="form-group">
-                <label for="exampleInputEmail1">Tour Name</label>
-                <input value={name} type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter name" onChange={(e)=> setName(e.target.value)}/>
+                <label for="exampleInputEmail1">Tour Name</label><br/>
+                <span style={{color:'red'}}>{nameErr}</span>
+                <input value={name} type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter name" onChange={(e)=> {
+                  setNameErr("")
+                  setName(e.target.value)}}/>
             
               </div>
 
               <div class="form-group">
-                <label for="exampleInputEmail1">Description</label>
-                <input value={desc} type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter description" onChange={(e)=> setDesc(e.target.value)}/>
+                <label for="exampleInputEmail1">Description</label><br/>
+                <span style={{color:'red'}}>{descErr}</span>
+                <input value={desc} type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter description" onChange={(e)=> {
+                  setDesc(e.target.value)
+                  setDescErr("")
+                }}/>
             
               </div>
 
               <div class="form-group">
-                <label for="exampleInputEmail1">Address</label>
-                <input value={address} type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter address" onChange={(e)=> setAddress(e.target.value)}/>
+                <label for="exampleInputEmail1">Address</label><br/>
+                <span style={{color:'red'}}>{addressErr}</span>
+                <input value={address} type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter address" onChange={(e)=> {
+                  setAddress(e.target.value)
+                  setAddressErr("")
+                }}/>
             
               </div>
 
               <div class="form-group">
-                <label for="exampleInputEmail1">Date Number</label>
-                <input value={time} type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter date number" onChange={(e)=> setTime(e.target.value)}/>
+                <label for="exampleInputEmail1">Date Number</label><br/>
+                <span style={{color:'red'}}>{timeErr}</span>
+                
+                <input value={time} type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter date number" onChange={(e)=> {
+                  setTime(e.target.value)
+                  setTimeErr("")
+                }}/>
             
               </div>
 
               <div class="form-group">
-                <label for="exampleInputEmail1">Price</label>
-                <input value={price} type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter price" onChange={(e)=> setPrice(e.target.value)}/>
+                <label for="exampleInputEmail1">Price</label><br/>
+                <span style={{color:'red'}}>{priceErr}</span>
+                
+                <input value={price} type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter price" onChange={(e)=> {
+                  setPrice(e.target.value)
+                  setPriceErr("")
+                }}/>
             
               </div>
 
               <div class="form-group">
-                <label for="exampleInputEmail1">Person Number</label>
-                <input value={personNumber} type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter person number" onChange={(e)=> setPersonNumber(e.target.value)}/>
+                <label for="exampleInputEmail1">Person Number</label><br/>
+                <span style={{color:'red'}}>{personNumberErr}</span>
+
+                <input value={personNumber} type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter person number" onChange={(e)=> {
+                  setPersonNumber(e.target.value)
+                  setPersonNumberErr("")
+                }}/>
             
               </div>
 
               <div class="form-group">
-                <label for="exampleInputEmail1">Is Sale</label>
-                <input value={isSale} type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter is sale" onChange={(e)=> setIsSale(e.target.value)}/>
+                <label for="exampleInputEmail1">Is Sale</label><br/>
+                <span style={{color:'red'}}>{isSaleErr}</span>
+
+                <input value={isSale} type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter is sale" onChange={(e)=> {
+                  setIsSale(e.target.value)
+                  setIsSaleErr("")
+                }}/>
             
               </div>
 
               <div class="form-group" style={{display:'flex',flexDirection:'column'}}>
-                <label for="exampleInputEmail1">Category</label>
-                <select value={category} onChange={(e)=> setCategory(e.target.value)}  class="form-select" aria-label="Default select example" style={{height:40,border:'1px solid #cad1d7',borderRadius:5}}>
+                <label for="exampleInputEmail1">Category</label><br/>
+                <span style={{color:'red'}}>{categoryErr}</span>
+                
+                <select value={category} onChange={(e)=> {
+                  setCategory(e.target.value)
+                  setCategoryErr("");
+                }}  class="form-select" aria-label="Default select example" style={{height:40,border:'1px solid #cad1d7',borderRadius:5}}>
                 <option defaultChecked selected value="" disabled>Choose a category</option>
                   {
                     categoryList.length > 0 && categoryList.map(item =>{
@@ -225,7 +352,9 @@ const navigate = useNavigate();
 
              
               <div class="form-group">
-                <label for="exampleInputPassword1">Image</label>
+                <label for="exampleInputPassword1">Image</label><br/>
+                <span style={{color:'red'}}>{imageErr}</span>
+
                 <input type="file" class="form-control" id="exampleInputPassword1" placeholder="Image" onChange={handleChooseImage}/>
                 {
                   image.trim() !== "" && (

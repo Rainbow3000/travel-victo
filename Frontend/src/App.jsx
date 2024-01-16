@@ -10,7 +10,7 @@ import Register from './pages/register/Register'
 import Address from './pages/address/Address'
 import NotFound from './pages/notFound/NotFound'
 import Success from './pages/success/Success'
-import {PayPalScriptProvider} from '@paypal/react-paypal-js'
+import {PayPalScriptProvider,PayPalButtons} from '@paypal/react-paypal-js'
 import ProductByCategory from './pages/productByCategory/ProductByCategory'
 import Destination from './components/destinations/Destinations'
 import TravelList from './components/travelList/TravelList'
@@ -25,7 +25,9 @@ import {
 import Payment from './pages/payment/Payment'
 import Booking from './pages/booking/Booking'
 const App = () => { 
+
   return (
+    <PayPalScriptProvider options={{'client-id':'AagTOsTYtZy14pye1cJ7MOG0KGsxhclHXiuLuuXXVJQwPGz82NqxngLu2sOQSXZO-g0y-DlGsGlIYIkT'}}>
         <div className='page-wrapper' >
             <BrowserRouter>
                 <Navbar />
@@ -51,6 +53,7 @@ const App = () => {
                 <Footer/>
             </BrowserRouter>
         </div>
+      </PayPalScriptProvider>
    
   )
 }

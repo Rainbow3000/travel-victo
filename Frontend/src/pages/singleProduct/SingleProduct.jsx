@@ -197,7 +197,7 @@ const SingleProduct = () => {
                
                 <li class="d-block ">
                     <div class="pt-1">
-                        <span class="fw-bold">${singleTour?.price} x {singleTour?.personNumber} guests:</span><span class="float-end  fw-bold">${singleTour?.price * singleTour?.personNumber}.00</span>
+                        <span class="fw-bold">${singleTour?.price} x {singleTour?.personNumber} guests:</span><span class="float-end  fw-bold">${singleTour?.price}.00</span>
                     </div>
                 </li>
                 <li class="d-block ">
@@ -214,7 +214,7 @@ const SingleProduct = () => {
 
                 <li class="d-block border-t">
                     <div class="pt-1">
-                        <span class="fw-bold">Total</span><span class="float-end  fw-bold">$ {singleTour?.price * singleTour?.personNumber}</span>
+                        <span class="fw-bold">Total</span><span class="float-end  fw-bold">$ {singleTour?.price}</span>
                     </div>
                 </li>
             </ul>

@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 const TravelList = () => {
-    let {products} = useSelector(state => state.product)
+    let {travelProducts} = useSelector(state => state.product)
     
     const location = useLocation(); 
     const url = location.pathname; 
@@ -16,16 +16,16 @@ const TravelList = () => {
     
     return (
         <div className="container-travel">
-            <div className="travel">
+            <div className="travel" style={{textAlign:'center'}}>
                 <div className="travel-top">
-                    <p>Top Travel List</p>
-                    <h2>Top Tour Packages</h2>
+                    <p id='travel'>Travel List</p>
+                    <h2>Top Tour Hot</h2>
                     <span>Discover outstanding Southeast Asian tours with us !</span>
                 </div>
                 <div className="travel-list" >
 
                     {
-                        products?.length > 0 && id === undefined && products.map(item =>{
+                        travelProducts?.length > 0 && id === undefined && travelProducts.map(item =>{
                             return (
                                 <Link to={`/single/${item._id}`}>
                                     <div className="child-travel">
@@ -58,7 +58,7 @@ const TravelList = () => {
                     }
 
 {
-                        products?.length > 0 && id !== undefined && products.filter(item => item.category === id).map(item =>{
+                        travelProducts?.length > 0 && id !== undefined && travelProducts.filter(item => item.category === id).map(item =>{
                             return (
                                 <div className="child-travel">
 
@@ -91,9 +91,14 @@ const TravelList = () => {
                         })
                     }
 
-                  
                 
                 </div>
+                    {
+                        travelProducts.length === 0 && (
+                            <span>There are no products searched !</span>
+                        )
+                    }
+                  
             </div>
            
         </div>

@@ -52,6 +52,8 @@ const Login = () => {
     if(user !== null){
       navigate('/')
     }
+    setEmailErr("");
+    setPasswordErr(""); 
   },[])
   
   return (

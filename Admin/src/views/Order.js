@@ -46,10 +46,13 @@ const Order = () => {
 
   const handleDelete = async(id)=>{
     try {
-      await request.put(`order/${id}`,{
-        status:-1
-      })
-      getOrder(); 
+      let text = "Are you sure want to cancel this order ?";
+      if (window.confirm(text) === true) {       
+        await request.put(`order/${id}`,{
+          status:-1
+        })
+        getOrder(); 
+      }
     } catch (error) {
       
     }
@@ -92,7 +95,7 @@ const Order = () => {
             <Card className="shadow">
             <CardHeader className="border-0 d-flex" style={{justifyContent:'space-between', width:'100%'}}>
                 <h3 className="mb-0">Order</h3>
-                <button className="btn btn-primary" onClick={()=> handleExportExcel()}>Export</button>
+                <button className="btn btn-primary" onClick={()=> handleExportExcel()}>Excel</button>
               </CardHeader>
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">

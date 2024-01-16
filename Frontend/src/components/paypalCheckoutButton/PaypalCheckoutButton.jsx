@@ -1,84 +1,42 @@
-import {React, useState} from 'react'
+import React,{useState} from 'react'
 import {PayPalButtons} from '@paypal/react-paypal-js'
-import { useDispatch} from 'react-redux'
-import { useNavigate } from 'react-router-dom'; 
-import moment from 'moment';
-const PaypalCheckoutButton = ({products,totalPay,addressUser,user}) => {
-  const [paidFor,setPaidFor] = useState(false); 
-  const [error,setError] = useState(null); 
-  const dispatch = useDispatch(); 
-  const navigate = useNavigate(); 
-  let order = null; 
-  const handleApprove = (orderID)=>{ 
-      if(orderID){
-        setPaidFor(true); 
-         const filterProducts = products.map(item=>{
-      return {productDesc:item.desc, productName:item.name,productId:item._id,quantity:item.quantity,total:item.quantity * item.price,size:item.size, color:item.color,image:item.image}
-    })
-     order = {
-      userId : user._id, 
-      userName : user.userName, 
-      products:[...filterProducts],
-      totalOrder:totalPay,
-      phone:addressUser.phone, 
-      address:addressUser.address,
-      methodPay:"paypal",
-      email:user.email,
-      isPaid:true, 
-      isDelivered:false, 
-      deliveredAt:"", 
-      paidAt:moment().format('MMMM Do YYYY, h:mm:ss a'), 
-      orderDate: moment().format('MMMM Do YYYY, h:mm:ss a'), 
-      resultOrder: "pending" 
-    }
-      } 
-  }
-  
-  if(paidFor === true){
-    const paymentFullFilled  = async()=>{
-        try {
-         
-         
-        } catch (error) {
-           console.log(error);
-        }
-    }
-    paymentFullFilled(); 
-  }
+const PaypalCheckoutButton = () => {
+  const [show, setShow] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [ErrorMessage, setErrorMessage] = useState("");
+  const [orderID, setOrderID] = useState(false);
 
-  if(error){
-    alert(error)
-  }
-  return <PayPalButtons 
-  style={{color:"silver",layout:"horizontal",height:48,tagline:false}}
-  createOrder = {(data,actions)=>{
+  // creates a paypal order
+  const createOrder = (data, actions) => {
       return actions.order.create({
-        purchase_units:[
-          {
-            description:"payment with paypal", 
-            amount:{
-              value:totalPay
-            }
-          }
-        ]
-      })
-  }}
-  onClick = {(data,actions)=>{
-    console.log(data);
-  }}
-  onApprove = {async(data,actions)=>{
-      const order = await actions.order.capture();
-      console.log("order",order); 
-      handleApprove(data.orderID);
-  }}
-  onCancel = {()=>{
+          purchase_units: [
+              {
+                  description: "Sunflower",
+                  amount: {
+                      currency_code: "USD",
+                      value: 20,
+                  },
+              },
+          ],
+      }).then((orderID) => {
+              setOrderID(orderID);
+              return orderID;
+          });
+  };
 
-  }}
-  onError={(err)=>{
-    setError(err); 
-    console.error("payment error:",err); 
-  }}
-  />
+  // check Approval
+  const onApprove = (data, actions) => {
+      return actions.order.capture().then(function (details) {
+          const { payer } = details;
+          setSuccess(true);
+      });
+  };
+  return (
+    <PayPalButtons  
+    style={{ layout: "vertical" }}
+    createOrder={createOrder}
+    onApprove={onApprove}/>
+  )
 }
 
 export default PaypalCheckoutButton

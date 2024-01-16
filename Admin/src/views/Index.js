@@ -22,6 +22,7 @@ import {
 } from "reactstrap";
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import axios from "axios";
 
 const Index = (props) => {
   const [activeNav, setActiveNav] = useState(1);
@@ -137,6 +138,18 @@ const navigate = useNavigate();
    
   },[charts]); 
 
+  const handleRemove = async(id)=>{
+    try {
+      let text = "Are you sure deleted this user ?";
+      if (window.confirm(text) === true) {    
+        await request.delete(`/customer/${id}`);
+        getCustomer(); 
+      }
+    } catch (error) {
+      
+    }
+  }
+
   const toggleNavs = (e, index) => {
     e.preventDefault();
     setActiveNav(index);
@@ -229,7 +242,7 @@ const navigate = useNavigate();
                           </td>
                           <td>
                               <div className="d-flex align-items-center">
-                                  <button className="btn btn-danger">Remove</button>
+                                  <button onClick={()=> handleRemove(item._id)} className="btn btn-danger">Remove</button>
                                 </div>
                           </td>
                         </tr>

@@ -33,6 +33,8 @@ const Category = () => {
   const [showOverlay,setShowOverlay] = useState(false); 
   const [categoryUpdate,setCategoryUpdate] = useState(""); 
   const [previewImage,setPreviewImage] = useState(""); 
+  const [nameErr,setNameErr] = useState("")
+  const [ImageErr,setImageErr] = useState("")
   const [name,setName] = useState(""); 
   const [typeForm,setTypeForm] = useState(1); 
   const [id,setId] = useState(""); 
@@ -57,6 +59,7 @@ const Category = () => {
 
 
   const handleChooseImage = (event)=>{
+    setImageErr("");
     const file = event.target.files[0]; 
           const fileName =  `images/${uuid()}-${file.name}`; 
           const storageRef = refStorage(storage,fileName); 
@@ -70,6 +73,19 @@ const Category = () => {
 
 const handleSubmit = async(e)=>{
   e.preventDefault(); 
+  let isErr = false;
+  if(image.trim() === ""){
+      isErr = true; 
+      setImageErr("Image is required"); 
+  }
+
+  if(name.trim() === ""){
+      setNameErr("Category name is required")
+      isErr = true; 
+  }
+
+  if(isErr) return; 
+
 
   if(typeForm === 1){
     try {
@@ -95,12 +111,18 @@ const handleSubmit = async(e)=>{
     }
   }
 
+  setName("");
+  setImage(""); 
+
 }
 
 const handleDelete = async(id)=>{
   try {
-    await request.delete(`category/${id}`)
-    getCategory(); 
+    let text = "Are you sure deleted this category ?";
+    if (window.confirm(text) === true) {    
+      await request.delete(`category/${id}`)
+      getCategory(); 
+    }
   } catch (error) {
     
   }
@@ -127,13 +149,19 @@ const handleDelete = async(id)=>{
                 <i class="fa-solid fa-xmark" onClick={()=>setShowOverlay(false)}></i>
               </div>
               <div class="form-group">
-                <label for="exampleInputEmail1">Category Name</label>
-                <input value={name} type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter name" onChange={(e)=> setName(e.target.value)}/>
+                <label for="exampleInputEmail1">Category Name</label><br/>
+                <span style={{color:'red'}}>{nameErr}</span>
+                <input value={name} type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter name" onChange={(e)=> {
+              
+                  setNameErr(""); 
+                  setName(e.target.value)
+                }}/>
             
               </div>
              
               <div class="form-group">
-                <label for="exampleInputPassword1">Image</label>
+                <label for="exampleInputPassword1">Image</label><br/>
+                <span style={{color:'red'}}>{ImageErr}</span>
                 <input type="file" class="form-control" id="exampleInputPassword1" placeholder="Image" onChange={handleChooseImage}/>
                 {
                   image.trim() !== "" && (

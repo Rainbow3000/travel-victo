@@ -3,6 +3,9 @@ const router = express.Router();
 const orderController = require('../controllers/orderController')
 
 router.post('/api/order',orderController.createOrder); 
+router.post('/api/order/paypal',orderController.createOrderWithPaypal); 
+router.get('/api/order/paypal/success',orderController.getPaymentSuccess); 
+router.get('/api/order/paypal/cancel',orderController.getPaymentCancel); 
 router.post('/api/order/exportToExcel',orderController.exportToExcel); 
 router.get('/api/order',orderController.getAllOrder); 
 router.get('/api/order/charts',orderController.orderCharts)

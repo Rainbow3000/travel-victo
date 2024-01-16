@@ -9,13 +9,14 @@ import { MdOutlineDateRange } from "react-icons/md";
 import { FaPhone } from "react-icons/fa";
 import { FaDollarSign } from "react-icons/fa6";
 import { FaInfo } from "react-icons/fa";
+import {PayPalButtons} from '@paypal/react-paypal-js'
 const Payment = () => {
     const [name,setName] = useState(""); 
     const [email,setEmail] = useState(""); 
     const [phoneNumber,setPhoneNumber] = useState(""); 
     const [address,setAddress]= useState(""); 
     const [note,setNote] = useState(""); 
-
+	const [order,setOrder] = useState(null);
     const [nameErr,setNameErr] = useState(""); 
     const [emailErr,setEmailErr] = useState(""); 
     const [phoneErr,setPhoneErr] = useState(""); 
@@ -71,9 +72,9 @@ const Payment = () => {
 
       
         if(check === 1) return; 
-	
+
         const customer = {
-            name,
+			name,
             email,
             address,
 			phoneNumber,
@@ -87,11 +88,56 @@ const Payment = () => {
 			totalMonney:tourInfo.price,
 			payType
         }
-
-		dispatch(createOrder({customer,order}))
 		
-
+		dispatch(createOrder({customer,order}))
+	
     }
+
+
+
+	  // creates a paypal order
+	  const createOrderPaypal = (data, actions) => {
+		return actions.order.create({
+			purchase_units: [
+				{
+					description: "Booking travel",
+					amount: {
+						currency_code: "USD",
+						value: tourInfo?.price,
+					},
+				},
+			],
+		}).then((orderID) => {
+				return orderID;
+			});
+	};
+  
+	// check Approval
+	const onApprove = (data, actions) => {
+		return actions.order.capture().then(function (details) {
+			if(details){
+				console.log(details)
+				
+				const customer = {
+					name:details.payer.name.given_name,
+					email:details.payer.email_address,
+					address:details.payer.address.country_code,
+					phoneNumber,
+					note,
+					userId:user._id
+				}
+		
+				const order = {
+					product : tourInfo?._id,
+					schedule: scheduleInfo?._id,
+					totalMonney:tourInfo.price,
+					payType:'Paypal'
+				}
+				
+				dispatch(createOrder({customer,order}))
+			}
+		});
+	};
 
     return (
 
@@ -150,8 +196,11 @@ const Payment = () => {
 													<div class="submitting"></div>
 												</div>
                                                 <div class="form-group">
-													<input onClick={()=>setPayType('Paypal')}  type="submit" value="ORDER WITH PAYPAL" class="btn btn-primary"/>
-													<div class="submitting"></div>
+													 <PayPalButtons  
+													style={{ layout: "vertical" }}
+													createOrder={createOrderPaypal}
+													onApprove={onApprove}/>
+												
 												</div>
 											</div>
 										</div>
